@@ -1,0 +1,11 @@
+export class FlowchartySettings {
+  circleNodeStroke: string = "#000";
+
+  circleNodeStrokeWidth: number = 2;
+
+  circleNodeRadius: number = 2.5;
+
+  circleNodeFill: string = "#fff";
+
+  arrowHeadSize: number = 12;
+}

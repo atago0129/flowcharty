@@ -1,0 +1,30 @@
+{
+  "name": "flowcharty",
+  "version": "0.0.1",
+  "description": "flowchart with d3.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atago0129/flowcharty.git"
+  },
+  "keywords": [
+    "d3.js",
+    "flowchart"
+  ],
+  "author": "atago0129",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/atago0129/flowcharty/issues"
+  },
+  "homepage": "https://github.com/atago0129/flowcharty#readme",
+  "dependencies": {
+    "d3": "^5.7.0"
+  },
+  "devDependencies": {
+    "@types/d3": "^5.0.0",
+    "typescript": "^3.0.3"
+  }
+}
