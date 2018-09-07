@@ -1,28 +1,27 @@
 ///<reference path="../node_modules/@types/d3/index.d.ts"/>
 import {FlowchartyElements} from "./elements";
 import {FlowchartySettings} from "./settings";
-import {BaseType} from "d3-selection";
 
 import * as d3 from "d3";
 
 export class FlowchartyCanvas {
 
-  private _g: d3.Selection<BaseType, any, BaseType, any>|null = null;
+  private _g: d3.Selection<d3.BaseType, any, d3.BaseType, any>;
 
   private _widthInterval: number = 0;
 
   private _heightInterval: number = 0;
 
-  constructor(private _svg: d3.Selection<BaseType, any, BaseType, any>, private _settings: FlowchartySettings) {
+  constructor(private _svg: d3.Selection<d3.BaseType, any, d3.BaseType, any>, private _settings: FlowchartySettings) {
+    this._g = this._svg.append("g");
+    this.init();
   }
 
   public setSettings(settings: FlowchartySettings) {
     this._settings = settings;
   }
 
-  public init() {
-    if (this._g !== null) this._g.remove();
-    this._g = this._svg.append("g");
+  private init() {
     // init arrowhead
     this._g.append("defs").append("marker")
       .attr("id", "arrowhead")
@@ -53,8 +52,8 @@ export class FlowchartyCanvas {
   }
 
   private renderNodes(elements: FlowchartyElements) {
-    this._widthInterval = this._svg.attr("width") / elements.map.getColumnCount();
-    this._heightInterval = this._svg.attr("height") / elements.map.getRowCount();
+    this._widthInterval = Number(this._svg.attr("width")) / elements.map.getColumnCount();
+    this._heightInterval = Number(this._svg.attr("height")) / elements.map.getRowCount();
     elements.map.getRows().map((row, rowIndex) => {
       let node = this._g.selectAll(".node").data(row);
       let enter = node.enter()
@@ -72,16 +71,16 @@ export class FlowchartyCanvas {
         })
         .attr("width", "100%")
         .attr("height", "100%")
-        .attr("class", (d) => (d === null ? "_should_remove_element" : ""));
+        .attr("class", (d) => (d.id === "" ? "_should_remove_element" : ""));
       enter.append("circle")
         .attr("r", this._settings.circleNodeRadius)
         .attr("fill", this._settings.circleNodeFill)
         .attr("stroke", this._settings.circleNodeStroke)
         .attr("stroke-width", this._settings.circleNodeStrokeWidth);
       enter.append("text")
-        .attr("dx", (d) => (d.getNameLabelPosition().dx))
-        .attr("dy", (d) => (d.getNameLabelPosition().dy))
-        .attr("text-anchor", (d) => (d.getNameLabelPosition().textAnchor))
+        .attr("dx", (d) => (d.nameLabelPosition.dx))
+        .attr("dy", (d) => (d.nameLabelPosition.dy))
+        .attr("text-anchor", (d) => (d.nameLabelPosition.textAnchor))
         .text((d) => (d.name));
     })
   }
@@ -116,6 +115,7 @@ export class FlowchartyCanvas {
         }
       })
       .attr("stroke-dasharray", function(d) {
+        if (!(this instanceof SVGPathElement)) return "";
         if (d.linkType === "marge") {
           return [0, _this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth, this.getTotalLength()].join(" ");
         } else {

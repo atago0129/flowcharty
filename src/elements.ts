@@ -3,6 +3,9 @@ import {FlowchartyLink} from "./link";
 import {FlowchartyNode} from "./node";
 
 export class FlowchartyElements {
+
+  private  _dummyNode: FlowchartyNode;
+
   private _nodes: FlowchartyNode[];
 
   private _links: FlowchartyLink[];
@@ -14,9 +17,18 @@ export class FlowchartyElements {
     map: string[][],
     links: {source: string, target: string, label?: {name: string, positionType?: string}, arrowType?: string}[]
   }) {
+    this._dummyNode = new FlowchartyNode({id: "", name: ""});
     this._nodes = data.nodes.map((nodeData) => (new FlowchartyNode(nodeData)));
-    this.parseMap(data.map);
-    this.parseLink(data.links);
+    this._map = new FlowchartyMap(data.map.map((nodeIds) => (nodeIds.map((nodeId) => (this.getNodeById(nodeId))))));
+    this._links = data.links.map((link) => {
+      return new FlowchartyLink(
+        this.getNodeById(link.source),
+        this.getNodeById(link.target),
+        link.label,
+        link.arrowType
+      );
+    })
+
   }
 
   get nodes(): FlowchartyNode[] {
@@ -31,22 +43,8 @@ export class FlowchartyElements {
     return this._links;
   }
 
-  public getNodeById(id: string): FlowchartyNode|null {
-    return this._nodes.filter((node) => (node.id === id)).pop() || null;
+  public getNodeById(id: string): FlowchartyNode {
+    return this._nodes.filter((node) => (node.id === id)).pop() || this._dummyNode ;
   }
 
-  private parseMap(map: string[][]) {
-    this._map = new FlowchartyMap(map.map((nodeIds) => (nodeIds.map((nodeId) => (this.getNodeById(nodeId))))));
-  }
-
-  private parseLink(links: {source: string, target: string, label?: {name: string, positionType?: string}, arrowType?: string}[]) {
-    this._links = links.map((link) => {
-      return new FlowchartyLink(
-        this.getNodeById(link.source),
-        this.getNodeById(link.target),
-        link.label ? link.label : null,
-        link.arrowType ? link.arrowType : null
-      );
-    })
-  }
 }

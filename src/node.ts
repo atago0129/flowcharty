@@ -3,9 +3,9 @@ export class FlowchartyNode {
 
   private readonly _name: string;
 
-  private nodePosition: {x: number, y: number};
+  private _nodePosition: {x: number, y: number} = {x: 0, y: 0};
 
-  private nameLabelPosition: {dx: number, dy: number, textAnchor: string} = {dx: -10, dy: -10, textAnchor: "end"};
+  private _nameLabelPosition: {dx: number, dy: number, textAnchor: string} = {dx: -10, dy: -10, textAnchor: "end"};
 
   constructor(data: {id: string, name: string}) {
     this._id = data.id;
@@ -21,22 +21,22 @@ export class FlowchartyNode {
   }
 
   set x(x: number) {
-    this.nodePosition.x = x;
+    this._nodePosition.x = x;
   }
 
   get x(): number {
-    return this.nodePosition.x;
+    return this._nodePosition.x;
   }
 
   set y(y: number) {
-    this.nodePosition.y = y;
+    this._nodePosition.y = y;
   }
 
   get y(): number {
-    return this.nodePosition.y;
+    return this._nodePosition.y;
   }
 
-  public getNameLabelPosition() {
-    return this.nameLabelPosition;
+  get nameLabelPosition() {
+    return this._nameLabelPosition;
   }
 }

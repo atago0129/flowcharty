@@ -4,7 +4,7 @@ import {FlowchartyCanvas} from "./canvas";
 import {FlowchartyElements} from "./elements";
 import {BaseType} from "d3-selection";
 
-export class Flowcharty {
+export default class Flowcharty {
 
   private _canvas: FlowchartyCanvas;
 
@@ -16,12 +16,6 @@ export class Flowcharty {
       svg = target;
     }
     this._canvas = new FlowchartyCanvas(svg, new FlowchartySettings());
-    this._canvas.init();
-  }
-
-  set settings(settings: FlowchartySettings) {
-    this._canvas.setSettings(settings);
-    this._canvas.init();
   }
 
   public render(data: {

@@ -2,15 +2,11 @@
   "name": "flowcharty",
   "version": "0.0.1",
   "description": "flowchart with d3.js",
-  "main": "index.js",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
   "scripts": {
-    "build": "rimraf lib/**/*.{js,map} && tsc -p ./tsconfig.esm.json && tsc -p ./tsconfig.cjs.json",
-    "test": "jest",
-    "perf": "ts-node --project tsconfig.json ./perf/refnew.perf.ts",
-    "pretty-quick": "pretty-quick",
-    "precommit": "pretty-quick --staged",
-    "postcommit": "git reset",
-    "release": "npm run build && np"
+    "build": "rimraf dist/**/*.{js,map} && parcel ./debug/index.html",
   },
   "repository": {
     "type": "git",
@@ -30,10 +26,12 @@
   },
   "homepage": "https://github.com/atago0129/flowcharty#readme",
   "dependencies": {
-    "d3": "^5.7.0"
+    "d3": "^5.7.0",
+    "tslib": "^1.9.3"
   },
   "devDependencies": {
     "@types/d3": "^5.0.0",
+    "parcel-bundler": "^1.9.7",
     "rimraf": "^2.6.2",
     "typescript": "^3.0.3"
   }
