@@ -1,28 +1,42 @@
 export class FlowchartyNode {
-  private id: string;
+  private readonly _id: string;
 
-  private name: string;
+  private readonly _name: string;
 
-  private position: {dx: number, dy: number, textAnchor: string} = {dx: -10, dy: -10, textAnchor: "end"};
+  private nodePosition: {x: number, y: number};
+
+  private nameLabelPosition: {dx: number, dy: number, textAnchor: string} = {dx: -10, dy: -10, textAnchor: "end"};
 
   constructor(data: {id: string, name: string}) {
-    this.id = data.id;
-    this.name = data.name;
+    this._id = data.id;
+    this._name = data.name;
   }
 
-  public getId(): string {
-    return this.id;
+  get id(): string {
+    return this._id;
   }
 
-  public getName(): string {
-    return this.name;
+  get name(): string {
+    return this._name;
   }
 
-  public setPosition(position: {dx: number, dy: number, textAnchor: string}) {
-    this.position = position;
+  set x(x: number) {
+    this.nodePosition.x = x;
   }
 
-  public getPosition() {
-    return this.position;
+  get x(): number {
+    return this.nodePosition.x;
+  }
+
+  set y(y: number) {
+    this.nodePosition.y = y;
+  }
+
+  get y(): number {
+    return this.nodePosition.y;
+  }
+
+  public getNameLabelPosition() {
+    return this.nameLabelPosition;
   }
 }

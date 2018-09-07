@@ -4,12 +4,21 @@
   "description": "flowchart with d3.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rimraf lib/**/*.{js,map} && tsc -p ./tsconfig.esm.json && tsc -p ./tsconfig.cjs.json",
+    "test": "jest",
+    "perf": "ts-node --project tsconfig.json ./perf/refnew.perf.ts",
+    "pretty-quick": "pretty-quick",
+    "precommit": "pretty-quick --staged",
+    "postcommit": "git reset",
+    "release": "npm run build && np"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/atago0129/flowcharty.git"
   },
+  "files": [
+    "lib"
+  ],
   "keywords": [
     "d3.js",
     "flowchart"
@@ -25,6 +34,7 @@
   },
   "devDependencies": {
     "@types/d3": "^5.0.0",
+    "rimraf": "^2.6.2",
     "typescript": "^3.0.3"
   }
 }
