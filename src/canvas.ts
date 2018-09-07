@@ -1,4 +1,3 @@
-///<reference path="../node_modules/@types/d3/index.d.ts"/>
 import {FlowchartyElements} from "./elements";
 import {FlowchartySettings} from "./settings";
 
