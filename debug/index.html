@@ -3,41 +3,7 @@
 <meta charset="utf-8">
 <body>
 <svg width="960" height="960"></svg>
-<script src="../dist/flowcharty.js"></script>
+<script src="./app.js"></script>
 <script src="//d3js.org/d3.v4.min.js"></script>
-<script>
-  var data = {
-    nodes: [
-      {id: 'start', name: 'スタート'},
-      {id: 'hoge', name: 'ほげ'},
-      {id: 'fuga', name: 'ふが'},
-      {id: 'piyo', name: 'ぴよ'},
-      {id: 'hogehoge', name: 'ほげほげ'},
-      {id: 'piyopiyo', name: 'ぴよぴよ'},
-      {id: 'goal', name: 'ゴール'}
-    ],
-    map: [
-      ['start'],
-      ['hoge'],
-      ['piyo', '', 'fuga'],
-      ['', 'piyopiyo'],
-      ['hogehoge'],
-      ['goal']
-    ],
-    links: [
-      {source: 'start', target: 'hoge'},
-      {source: 'hoge', target: 'fuga', label: {name: 'no'}},
-      {source: 'hoge', target: 'piyo', label: {name: 'yes'}},
-      {source: 'piyo', target: 'piyopiyo', label: {name: 'yes'}},
-      {source: 'piyo', target: 'hogehoge', label: {name: 'no'}},
-      {source: 'fuga', target: 'goal', type: 'marge'},
-      {source: 'piyopiyo', target: 'hogehoge', type: 'marge'},
-      {source: 'hogehoge', target: 'goal'}
-    ]
-  };
-
-  var flowchart = new Flowcharty(d3.select("svg"));
-  flowchart.render(data);
-</script>
 </body>
 </html>

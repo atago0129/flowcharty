@@ -6,7 +6,7 @@
   "module": "./lib/esm/index.js",
   "types": "./lib/esm/index.d.ts",
   "scripts": {
-    "build": "rimraf dist/**/*.{js,map} && parcel ./debug/index.html",
+    "debug": "rimraf dist/**/*.{js,map} && parcel ./debug/index.html"
   },
   "repository": {
     "type": "git",
@@ -26,13 +26,13 @@
   },
   "homepage": "https://github.com/atago0129/flowcharty#readme",
   "dependencies": {
-    "d3": "^5.7.0",
-    "tslib": "^1.9.3"
+    "d3": "^5.7.0"
   },
   "devDependencies": {
     "@types/d3": "^5.0.0",
     "parcel-bundler": "^1.9.7",
     "rimraf": "^2.6.2",
+    "tslib": "^1.9.3",
     "typescript": "^3.0.3"
   }
 }

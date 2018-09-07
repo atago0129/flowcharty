@@ -95,7 +95,7 @@ export class FlowchartyCanvas {
       .style("stroke", this._settings.linkStroke)
       .attr("marker-end", (d) => {
         if (d.linkType === "marge") {
-          return "url(#arrowhead_for_marker)";
+          return "url(#arrowhead_for_marge)";
         } else {
           return "url(#arrowhead)";
         }
@@ -107,11 +107,11 @@ export class FlowchartyCanvas {
           {x: d.targetNode.x, y: d.targetNode.y - margin},
         ];
         if (d.sourceNode.x === d.targetNode.x || d.sourceNode.y === d.targetNode.y) {
-          return FlowchartyCanvas.line().apply(lineData);
+          return _this.line(lineData);
         } else if (d.sourceNode.x > d.targetNode.x) {
-          return FlowchartyCanvas.lineStempBefore().apply(lineData);
+          return _this.lineStepBefore(lineData);
         } else {
-          return FlowchartyCanvas.lineStempAfter().apply(lineData);
+          return _this.lineStepAfter(lineData);
         }
       })
       .attr("stroke-dasharray", function(d) {
@@ -126,32 +126,35 @@ export class FlowchartyCanvas {
     enter.append("text")
       .attr("class", (d) => (d.label.name === "" ? "_should_remove_element" : ""))
       .text((d) => (d.label.name))
-      .attr("x", (d) => (
-        d.sourceNode.x === d.targetNode.x ? d.sourceNode.x - (this._settings.circleNodeRadius * 2.5 + this._settings.circleNodeStrokeWidth) : d.sourceNode.x + (this._settings.circleNodeRadius * 4 + this._settings.circleNodeStrokeWidth)
-      ))
-      .attr("y", (d) => (
-        d.sourceNode.y === d.targetNode.y ? d.sourceNode.y + (this._settings.circleNodeRadius * 5 + this._settings.circleNodeStrokeWidth) : d.sourceNode.x - (this._settings.circleNodeRadius + this._settings.circleNodeStrokeWidth)
-      ))
+      .attr("x", (d) => {
+        if (d.sourceNode.x === d.targetNode.x) {
+          return d.sourceNode.x - (_this._settings.circleNodeRadius * 2.5 + _this._settings.circleNodeStrokeWidth);
+        } else {
+          return d.sourceNode.x + (_this._settings.circleNodeRadius * 4 + _this._settings.circleNodeStrokeWidth);
+        }
+      })
+      .attr("y", (d) => {
+        if (d.sourceNode.x === d.targetNode.x) {
+          return d.sourceNode.y + (_this._settings.circleNodeRadius * 5 + _this._settings.circleNodeStrokeWidth);
+        } else {
+          return d.sourceNode.y - (_this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth);
+        }
+      })
       .attr("text-anchor", (d) => (d.sourceNode.x === d.targetNode.x ? "end" : "start"));
   }
 
-  private static line(): d3.Line<{x: number, y:number}>  {
-    return d3.line<{x: number, y:number}>()
-      .x((d: {x: number, y:number}) => (d.x))
-      .y((d: {x: number, y:number}) => (d.y));
-  }
+  private line: d3.Line<{x: number, y:number}> = d3.line<{x: number, y:number}>()
+    .x((d: {x: number, y:number}) => (d.x))
+    .y((d: {x: number, y:number}) => (d.y));
 
-  private static lineStempBefore(): d3.Line<{x: number, y:number}>  {
-    return d3.line<{x: number, y:number}>()
+  private lineStepBefore: d3.Line<{x: number, y:number}> = d3.line<{x: number, y:number}>()
       .curve(d3.curveStepBefore)
       .x((d: {x: number, y:number}) => (d.x))
       .y((d: {x: number, y:number}) => (d.y));
-  }
 
-  private static lineStempAfter(): d3.Line<{x: number, y:number}>  {
-    return d3.line<{x: number, y:number}>()
-      .curve(d3.curveStepAfter)
-      .x((d: {x: number, y:number}) => (d.x))
-      .y((d: {x: number, y:number}) => (d.y));
-  }
+  private lineStepAfter: d3.Line<{x: number, y:number}> = d3.line<{x: number, y:number}>()
+    .curve(d3.curveStepAfter)
+    .x((d: {x: number, y:number}) => (d.x))
+    .y((d: {x: number, y:number}) => (d.y));
+
 }

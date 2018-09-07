@@ -15,7 +15,7 @@ export class FlowchartyElements {
   constructor(data: {
     nodes: {id: string, name: string}[],
     map: string[][],
-    links: {source: string, target: string, label?: {name: string, positionType?: string}, arrowType?: string}[]
+    links: {source: string, target: string, label?: {name: string, positionType?: string}, linkType?: string}[]
   }) {
     this._dummyNode = new FlowchartyNode({id: "", name: ""});
     this._nodes = data.nodes.map((nodeData) => (new FlowchartyNode(nodeData)));
@@ -25,7 +25,7 @@ export class FlowchartyElements {
         this.getNodeById(link.source),
         this.getNodeById(link.target),
         link.label,
-        link.arrowType
+        link.linkType
       );
     })
 

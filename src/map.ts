@@ -6,7 +6,7 @@ export class FlowchartyMap {
   }
 
   public getColumnCount(): number {
-    return Math.max.apply(this._map.map((nodes) => (nodes.length)));
+    return Math.max.apply(this, this._map.map((nodes) => (nodes.length)));
   }
 
   public getRowCount(): number {
