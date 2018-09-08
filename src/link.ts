@@ -6,22 +6,42 @@ export class FlowchartyLink {
     private _sourceNode: FlowchartyNode,
     private _targetNode: FlowchartyNode,
     private _label: {name: string, positionType?: string} = {name: ""},
-    private _linkType: string = "direct")
+    private _linkType: "direct"|"marge")
   {
   }
 
+  /**
+   * get source node instance of this link path
+   * @returns {FlowchartyNode}
+   */
   public get sourceNode(): FlowchartyNode {
     return this._sourceNode;
   }
 
+  /**
+   * get target node instance of this link path
+   * @returns {FlowchartyNode}
+   */
   public get targetNode(): FlowchartyNode {
     return this._targetNode;
   }
 
+  /**
+   * get label data
+   *  - name: name of link path
+   *  - positionType: [future]position of link path (ex. top, bottom, left, right)
+   * @returns {object}
+   */
   public get label(): { name: string; positionType?: string } {
     return this._label;
   }
 
+  /**
+   * get link type
+   *  - "direct": directly connect to node
+   *  - "marge": slide slightly off the node
+   * @returns {"direct"|"marge"}
+   */
   public get linkType(): string {
     return this._linkType;
   }

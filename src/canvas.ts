@@ -11,9 +11,17 @@ export class FlowchartyCanvas {
 
   private _heightInterval: number = 0;
 
+  /**
+   * @param {d3.Selection} _svg
+   * @param {FlowchartySettings} _settings
+   */
   constructor(private _svg: d3.Selection<d3.BaseType, any, d3.BaseType, any>, private _settings: FlowchartySettings) {
   }
 
+  /**
+   * render flowchart
+   * @param {FlowchartyElements} elements
+   */
   public render(elements: FlowchartyElements) {
     if (this._g !== undefined) {
       this._g.remove();
@@ -25,6 +33,10 @@ export class FlowchartyCanvas {
     d3.selectAll("._should_remove_element").remove();
   }
 
+  /**
+   * initialize
+   *  - init arrowhead
+   */
   private init() {
     // init arrowhead
     this._g.append("defs").append("marker")
@@ -49,6 +61,10 @@ export class FlowchartyCanvas {
       .attr("fill", "#000");
   }
 
+  /**
+   * render nodes by map
+   * @param {FlowchartyElements} elements
+   */
   private renderNodes(elements: FlowchartyElements) {
     this._widthInterval = Number(this._svg.attr("width")) / elements.map.getColumnCount();
     this._heightInterval = Number(this._svg.attr("height")) / elements.map.getRowCount();
@@ -83,6 +99,10 @@ export class FlowchartyCanvas {
     })
   }
 
+  /**
+   * render link path by map & links
+   * @param {FlowchartyElements} elements
+   */
   private renderLinks(elements: FlowchartyElements) {
     let _this = this;
     let link = this._g.selectAll(".link").data(elements.links).attr("class", "link");

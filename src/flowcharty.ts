@@ -7,6 +7,9 @@ export class Flowcharty {
 
   private _canvas: FlowchartyCanvas;
 
+  /**
+   * @param {FlowchartySettings} _settings
+   */
   constructor(private _settings: FlowchartySettings = new FlowchartySettings()) {
   }
 
@@ -18,7 +21,7 @@ export class Flowcharty {
   public render(target: string|d3.Selection<d3.BaseType, any, d3.BaseType, any>, data: {
       nodes: {id: string, name: string}[],
       map: string[][],
-      links: {source: string, target: string, label?: {name: string, positionType?: string}, linkType?: string}[]
+      links: {source: string, target: string, label?: {name: string, positionType?: string}, linkType?: "direct"|"marge"}[]
   }): void {
     let svg: d3.Selection<d3.BaseType, any, d3.BaseType, any>;
     if (typeof target === "string") {
