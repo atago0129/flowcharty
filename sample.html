@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<body>
+<svg width="960" height="960"></svg>
+<script src="//d3js.org/d3.v5.min.js"></script>
+<script src="./dist/flowcharty.js"></script>
+<script>
+  var data = {
+    nodes: [
+      {id: 'start', name: 'スタート'},
+      {id: 'hoge', name: 'ほげ'},
+      {id: 'fuga', name: 'ふが'},
+      {id: 'piyo', name: 'ぴよ'},
+      {id: 'hogehoge', name: 'ほげほげ'},
+      {id: 'piyopiyo', name: 'ぴよぴよ'},
+      {id: 'goal', name: 'ゴール'}
+    ],
+    map: [
+      ['start'],
+      ['hoge'],
+      ['piyo', '', 'fuga'],
+      ['', 'piyopiyo'],
+      ['hogehoge'],
+      ['goal']
+    ],
+    links: [
+      {source: 'start', target: 'hoge'},
+      {source: 'hoge', target: 'fuga', label: {name: 'no'}},
+      {source: 'hoge', target: 'piyo', label: {name: 'yes'}},
+      {source: 'piyo', target: 'piyopiyo', label: {name: 'yes'}},
+      {source: 'piyo', target: 'hogehoge', label: {name: 'no'}},
+      {source: 'fuga', target: 'goal', linkType: 'marge'},
+      {source: 'piyopiyo', target: 'hogehoge', linkType: 'marge'},
+      {source: 'hogehoge', target: 'goal'}
+    ]
+  };
+
+  var flowcharty = new Flowcharty();
+  flowcharty.render(d3.select("svg"), data);
+</script>
+</body>
+</html>

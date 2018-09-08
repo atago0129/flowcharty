@@ -6,7 +6,8 @@
   "module": "./lib/esm/index.js",
   "types": "./lib/esm/index.d.ts",
   "scripts": {
-    "debug": "rimraf dist/**/*.{js,map} && parcel ./debug/index.html"
+    "build": "rimraf dist/**/* && parcel build ./src/index.js -o flowcharty.js",
+    "debug": "rimraf dist/**/* && parcel ./debug/index.html"
   },
   "repository": {
     "type": "git",

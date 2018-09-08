@@ -31,5 +31,5 @@ var data = {
   ]
 };
 
-var hogehoge = new Flowcharty(d3.select("svg"));
-hogehoge.render(data);
+var flowcharty = new Flowcharty();
+flowcharty.render(d3.select("svg"), data);

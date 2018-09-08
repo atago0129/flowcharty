@@ -5,49 +5,48 @@ import * as d3 from "d3";
 
 export class FlowchartyCanvas {
 
-  private _g: d3.Selection<d3.BaseType, any, d3.BaseType, any>;
+  private _g: d3.Selection<d3.BaseType, any, d3.BaseType, any>|undefined;
 
   private _widthInterval: number = 0;
 
   private _heightInterval: number = 0;
 
   constructor(private _svg: d3.Selection<d3.BaseType, any, d3.BaseType, any>, private _settings: FlowchartySettings) {
-    this._g = this._svg.append("g");
-    this.init();
   }
 
-  public setSettings(settings: FlowchartySettings) {
-    this._settings = settings;
+  public render(elements: FlowchartyElements) {
+    if (this._g !== undefined) {
+      this._g.remove();
+    }
+    this._g = this._svg.append("g");
+    this.init();
+    this.renderNodes(elements);
+    this.renderLinks(elements);
+    d3.selectAll("._should_remove_element").remove();
   }
 
   private init() {
     // init arrowhead
     this._g.append("defs").append("marker")
       .attr("id", "arrowhead")
-      .attr("refX", this._settings.arrowHeadSize + this._settings.circleNodeStrokeWidth + this._settings.circleNodeRadius)
-      .attr("refY", this._settings.arrowHeadSize / 2)
-      .attr("markerWidth", this._settings.arrowHeadSize)
-      .attr("markerHeight", this._settings.arrowHeadSize)
+      .attr("refX", this._settings.arrowheadSize + this._settings.circleNodeStrokeWidth + this._settings.circleNodeRadius)
+      .attr("refY", this._settings.arrowheadSize / 2)
+      .attr("markerWidth", this._settings.arrowheadSize)
+      .attr("markerHeight", this._settings.arrowheadSize)
       .attr("orient", "auto")
       .append("path")
-      .attr("d", ["M", "0,0", "V", this._settings.arrowHeadSize, "L", [this._settings.arrowHeadSize, this._settings.arrowHeadSize /2].join(","), "Z"].join(" "))
+      .attr("d", ["M", "0,0", "V", this._settings.arrowheadSize, "L", [this._settings.arrowheadSize, this._settings.arrowheadSize /2].join(","), "Z"].join(" "))
       .attr("fill", "#000");
     this._g.append("defs").append("marker")
       .attr("id", "arrowhead_for_marge")
-      .attr("refX", this._settings.arrowHeadSize)
-      .attr("refY", this._settings.arrowHeadSize / 2)
-      .attr("markerWidth", this._settings.arrowHeadSize)
-      .attr("markerHeight", this._settings.arrowHeadSize)
+      .attr("refX", this._settings.arrowheadSize)
+      .attr("refY", this._settings.arrowheadSize / 2)
+      .attr("markerWidth", this._settings.arrowheadSize)
+      .attr("markerHeight", this._settings.arrowheadSize)
       .attr("orient", "auto")
       .append("path")
-      .attr("d", ["M", "0,0", "V", this._settings.arrowHeadSize, "L", [this._settings.arrowHeadSize, this._settings.arrowHeadSize /2].join(","), "Z"].join(" "))
+      .attr("d", ["M", "0,0", "V", this._settings.arrowheadSize, "L", [this._settings.arrowheadSize, this._settings.arrowheadSize /2].join(","), "Z"].join(" "))
       .attr("fill", "#000");
-  }
-
-  public render(elements: FlowchartyElements) {
-    this.renderNodes(elements);
-    this.renderLinks(elements);
-    d3.selectAll("._should_remove_element").remove();
   }
 
   private renderNodes(elements: FlowchartyElements) {
@@ -118,7 +117,7 @@ export class FlowchartyCanvas {
         if (d.linkType === "marge") {
           return [0, _this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth, this.getTotalLength()].join(" ");
         } else {
-          return [0, _this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth, this.getTotalLength() - (_this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth + _this._settings.arrowHeadSize)].join(" ");
+          return [0, _this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth, this.getTotalLength() - (_this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth + _this._settings.arrowheadSize)].join(" ");
         }
       })
       .attr("stroke-dashoffset", 0);
