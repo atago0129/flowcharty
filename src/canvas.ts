@@ -2,6 +2,7 @@ import {FlowchartyElements} from "./elements";
 import {FlowchartySettings} from "./settings";
 
 import * as d3 from "d3";
+import {FlowchartyNode} from "./node";
 
 export class FlowchartyCanvas {
 
@@ -66,11 +67,12 @@ export class FlowchartyCanvas {
    * @param {FlowchartyElements} elements
    */
   private renderNodes(elements: FlowchartyElements) {
+    const _this = this;
     this._widthInterval = Number(this._svg.attr("width")) / elements.map.getColumnCount();
     this._heightInterval = Number(this._svg.attr("height")) / elements.map.getRowCount();
     elements.map.getRows().map((row, rowIndex) => {
-      let node = this._g.selectAll(".node").data(row);
-      let enter = node.enter()
+      const node = this._g.selectAll(".node").data(row);
+      const enter = node.enter()
         .append("svg")
         .style("overflow", "visible")
         .attr("x", (d, i) => {
@@ -91,12 +93,24 @@ export class FlowchartyCanvas {
         .attr("fill", this._settings.circleNodeFill)
         .attr("stroke", this._settings.circleNodeStroke)
         .attr("stroke-width", this._settings.circleNodeStrokeWidth);
-      enter.append("text")
-        .attr("dx", (d) => (d.nameLabelPosition.dx))
-        .attr("dy", (d) => (d.nameLabelPosition.dy))
-        .attr("text-anchor", (d) => (d.nameLabelPosition.textAnchor))
-        .text((d) => (d.name));
+      enter.html(function (d) {
+        return d3.select(this).html() + _this.getTextElementsWithLineBreak(d);
+      });
     })
+  }
+
+  /**
+   * get <text> elements for line break
+   * @param {FlowchartyNode} node
+   * @returns {string}
+   */
+  private getTextElementsWithLineBreak(node: FlowchartyNode): string {
+    let html = "";
+    const textArray = node.name.split(/\n/);
+    textArray.reverse().forEach((t, i) => {
+      html += `<text dx="${node.nameLabelPosition.dx}" dy="${node.nameLabelPosition.dy}" text-anchor="${node.nameLabelPosition.textAnchor}" y="-${i}em">${t}</text>`;
+    });
+    return html;
   }
 
   /**
@@ -104,9 +118,9 @@ export class FlowchartyCanvas {
    * @param {FlowchartyElements} elements
    */
   private renderLinks(elements: FlowchartyElements) {
-    let _this = this;
-    let link = this._g.selectAll(".link").data(elements.links).attr("class", "link");
-    let enter = link.enter().append("g");
+    const _this = this;
+    const link = this._g.selectAll(".link").data(elements.links).attr("class", "link");
+    const enter = link.enter().append("g");
 
     enter.append("path")
       .style("fill", "none")
@@ -119,8 +133,8 @@ export class FlowchartyCanvas {
         }
       })
       .attr("d", (d) => {
-        let margin = d.linkType === "marge" ? this._heightInterval / 5 : 0;
-        let lineData = [
+        const margin = d.linkType === "marge" ? this._heightInterval / 5 : 0;
+        const lineData = [
           {x: d.sourceNode.x, y: d.sourceNode.y},
           {x: d.targetNode.x, y: d.targetNode.y - margin},
         ];
