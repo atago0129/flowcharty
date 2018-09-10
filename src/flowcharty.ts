@@ -5,8 +5,6 @@ import {FlowchartyElements} from "./elements";
 
 export class Flowcharty {
 
-  private _canvas: FlowchartyCanvas;
-
   /**
    * @param {FlowchartySettings} _settings
    */
@@ -19,7 +17,7 @@ export class Flowcharty {
    * @param {object} data
    */
   public render(target: string|d3.Selection<d3.BaseType, any, d3.BaseType, any>, data: {
-      nodes: {id: string, name: string}[],
+      nodes: {id: string, label: {name: string, dx?: number, dy?: number, textAnchor?: "start"|"middle"|"end"}}[],
       map: string[][],
       links: {source: string, target: string, label?: {name: string, positionType?: string}, linkType?: "direct"|"marge"}[]
   }): void {
@@ -29,8 +27,8 @@ export class Flowcharty {
     } else {
       svg = target;
     }
-    this._canvas = new FlowchartyCanvas(svg, this._settings);
-    this._canvas.render(new FlowchartyElements(data));
+    const canvas = new FlowchartyCanvas(svg, this._settings);
+    canvas.render(new FlowchartyElements(data));
   }
 
   /**

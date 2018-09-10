@@ -33,19 +33,28 @@ export class FlowchartyElements {
    * @param {object} data
    */
   constructor(data: {
-    nodes: {id: string, name: string}[],
+    nodes: {id: string, label: {name: string, dx?: number, dy?: number, textAnchor?: "start"|"middle"|"end"}}[],
     map: string[][],
-    links: {source: string, target: string, label?: {name: string, positionType?: string}, linkType?: "direct"|"marge"}[]
+    links: {source: string, target: string, label?: {name: string, positionType?: string}, linkType?: "direct"|"marge", lineType?: "default"|"stepBefore"|"stepAfter"}[]
   }) {
-    this._dummyNode = new FlowchartyNode({id: "", name: ""});
-    this._nodes = data.nodes.map((nodeData) => (new FlowchartyNode(nodeData)));
+    this._dummyNode = new FlowchartyNode("", "");
+    this._nodes = data.nodes.map((nodeData) => (
+      new FlowchartyNode(
+        nodeData.id,
+        nodeData.label.name,
+        nodeData.label.dx,
+        nodeData.label.dy,
+        nodeData.label.textAnchor
+      )
+    ));
     this._map = new FlowchartyMap(data.map.map((nodeIds) => (nodeIds.map((nodeId) => (this.getNodeById(nodeId))))));
     this._links = data.links.map((link) => {
       return new FlowchartyLink(
         this.getNodeById(link.source),
         this.getNodeById(link.target),
         link.label,
-        link.linkType
+        link.linkType,
+        link.lineType
       );
     })
   }

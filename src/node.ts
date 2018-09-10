@@ -1,15 +1,10 @@
 export class FlowchartyNode {
-  private readonly _id: string;
-
-  private readonly _name: string;
-
   private _nodePosition: {x: number, y: number} = {x: 0, y: 0};
 
-  private _nameLabelPosition: {dx: number, dy: number, textAnchor: string} = {dx: -10, dy: -10, textAnchor: "end"};
+  private readonly _nameLabelPosition: {dx: number, dy:number, textAnchor: "start"|"middle"|"end"};
 
-  constructor(data: {id: string, name: string}) {
-    this._id = data.id;
-    this._name = data.name;
+  constructor(private _id: string, private _name: string, dx: number = -10, dy: number = -10, textAnchor: "start"|"middle"|"end" = "end") {
+    this._nameLabelPosition = {dx: dx, dy: dy, textAnchor: textAnchor};
   }
 
   /**

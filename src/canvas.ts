@@ -3,6 +3,7 @@ import {FlowchartySettings} from "./settings";
 
 import * as d3 from "d3";
 import {FlowchartyNode} from "./node";
+import {FlowchartyLink} from "./link";
 
 export class FlowchartyCanvas {
 
@@ -138,13 +139,7 @@ export class FlowchartyCanvas {
           {x: d.sourceNode.x, y: d.sourceNode.y},
           {x: d.targetNode.x, y: d.targetNode.y - margin},
         ];
-        if (d.sourceNode.x === d.targetNode.x || d.sourceNode.y === d.targetNode.y) {
-          return _this.line(lineData);
-        } else if (d.sourceNode.x > d.targetNode.x) {
-          return _this.lineStepBefore(lineData);
-        } else {
-          return _this.lineStepAfter(lineData);
-        }
+        return _this.decideLineType(d)(lineData);
       })
       .attr("stroke-dasharray", function(d) {
         if (!(this instanceof SVGPathElement)) return "";
@@ -173,6 +168,25 @@ export class FlowchartyCanvas {
         }
       })
       .attr("text-anchor", (d) => (d.sourceNode.x === d.targetNode.x ? "end" : "start"));
+  }
+
+  /**
+   * @param link
+   * @returns function
+   */
+  private decideLineType(link: FlowchartyLink) {
+    if (link.lineType === "stepBefore") {
+      return this.lineStepBefore;
+    } else if(link.lineType === "stepAfter") {
+      return this.lineStepAfter;
+    }
+    if (link.sourceNode.x === link.targetNode.x || link.sourceNode.y === link.targetNode.y) {
+        return this.line;
+    } else if (link.sourceNode.x > link.targetNode.x) {
+        return this.lineStepBefore;
+    } else {
+        return this.lineStepAfter;
+    }
   }
 
   private line: d3.Line<{x: number, y:number}> = d3.line<{x: number, y:number}>()

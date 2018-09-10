@@ -3,13 +3,13 @@ import * as d3 from "d3";
 
 var data = {
   nodes: [
-    {id: 'start', name: 'スタート'},
-    {id: 'hoge', name: 'ほげ'},
-    {id: 'fuga', name: 'ふが'},
-    {id: 'piyo', name: 'ぴよ'},
-    {id: 'hogehoge', name: 'ほげほげ'},
-    {id: 'piyopiyo', name: 'ぴよぴよ'},
-    {id: 'goal', name: 'ゴール'}
+    {id: 'start', label: {name: 'スタート'}},
+    {id: 'hoge', label: {name: '改行にも\n対応したよ'}},
+    {id: 'fuga', label: {name: 'ふが'}},
+    {id: 'piyo', label: {name: 'ぴよ'}},
+    {id: 'hogehoge', label: {name: 'ほげほげ'}},
+    {id: 'piyopiyo', label: {name: 'ぴよぴよ'}},
+    {id: 'goal', label: {name: 'ゴール'}}
   ],
   map: [
     ['start'],

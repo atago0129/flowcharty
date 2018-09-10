@@ -6,7 +6,8 @@ export class FlowchartyLink {
     private _sourceNode: FlowchartyNode,
     private _targetNode: FlowchartyNode,
     private _label: {name: string, positionType?: string} = {name: ""},
-    private _linkType: "direct"|"marge")
+    private _linkType: "direct"|"marge" = "direct",
+    private _lineType: "default"|"stepBefore"|"stepAfter" = "default")
   {
   }
 
@@ -44,5 +45,13 @@ export class FlowchartyLink {
    */
   public get linkType(): string {
     return this._linkType;
+  }
+
+  /**
+   * get line type
+   * @returns {"default"|"stepBefore"|"stepAfter"}
+   */
+  public get lineType(): "default"|"stepBefore"|"stepAfter" {
+    return this._lineType;
   }
 }
