@@ -1,7 +1,8 @@
 import {FlowchartyMap} from "./map";
 import {FlowchartyLink, FlowchartyLinkLabel, FlowchartyLinkStyle} from "./link";
-import {FlowchartyNode} from "./node";
+import {FlowchartyNode, FlowchartyNodeLabel, FlowchartyNodeStyle} from "./node";
 import {style} from "d3-selection";
+import {FlowchartySettings} from "./settings";
 
 export class FlowchartyElements {
 
@@ -33,8 +34,27 @@ export class FlowchartyElements {
   /**
    * @param {object} data
    */
-  constructor(data: {
-    nodes: {id: string, label: {name: string, dx?: number, dy?: number, textAnchor?: "start"|"middle"|"end"}}[],
+  constructor(settings: FlowchartySettings, data: {
+    nodes: {
+      id: string,
+      style?: {
+        shape?: "circle"|"rect",
+        width?: number,
+        height: number,
+        strokeWidth: number,
+        strokeColor: string,
+        fillColor: string
+      },
+      label: {
+        name: string,
+        dx?: number,
+        dy?: number,
+        textAnchor?: "start"|"middle"|"end",
+        color?: string,
+        fontSize: string,
+        fontFamily: string
+      }
+    }[],
     map: string[][],
     links: {
       source: string,
@@ -52,15 +72,7 @@ export class FlowchartyElements {
     }[]
   }) {
     this._dummyNode = new FlowchartyNode("", "");
-    this._nodes = data.nodes.map((nodeData) => (
-      new FlowchartyNode(
-        nodeData.id,
-        nodeData.label.name,
-        nodeData.label.dx,
-        nodeData.label.dy,
-        nodeData.label.textAnchor
-      )
-    ));
+    this._nodes = data.nodes.map((node) => (this.createNode(node, settings)));
     this._map = new FlowchartyMap(data.map.map((nodeIds) => (nodeIds.map((nodeId) => (this.getNodeById(nodeId))))));
     this._links = data.links.map((link) => (this.createLink(link)));
   }
@@ -75,8 +87,8 @@ export class FlowchartyElements {
       strokeColor: string,
       fillColor: string
     },
-    label?: {
-      name?: string,
+    label: {
+      name: string,
       dx?: number,
       dy?: number,
       textAnchor?: "start"|"middle"|"end",
@@ -84,9 +96,38 @@ export class FlowchartyElements {
       fontSize: string,
       fontFamily: string
     }
-  }): FlowchartyNode {
-    const style = new FlowchartyLinkStyle(
-    )
+  }, settings: FlowchartySettings): FlowchartyNode {
+    let style: FlowchartyNodeStyle;
+    if (node.style) {
+      style = new FlowchartyNodeStyle(
+        node.style.shape !== undefined ? node.style.shape : settings.shape,
+        node.style.width !== undefined ? node.style.width : settings.nodeWidth,
+        node.style.height !== undefined ? node.style.height : settings.nodeHeight,
+        node.style.strokeWidth !== undefined ? node.style.strokeWidth : settings.nodeStrokeWidth,
+        node.style.strokeColor !== undefined ? node.style.strokeColor : settings.nodeStrokeColor,
+        node.style.fillColor !== undefined ? node.style.fillColor : settings.nodeFillColor
+      );
+    } else {
+      style = new FlowchartyNodeStyle(
+        settings.shape,
+        settings.nodeWidth,
+        settings.nodeHeight,
+        settings.nodeStrokeWidth,
+        settings.nodeStrokeColor,
+        settings.nodeFillColor
+      );
+    }
+    const label: FlowchartyNodeLabel = new FlowchartyNodeLabel(
+      node.label.name,
+      node.label.dx !== undefined ? node.label.dx : settings.nodeLabelDX,
+      node.label.dy !== undefined ? node.label.dy : settings.nodeLabelDY,
+      node.label.textAnchor !== undefined ? node.label.textAnchor : settings.nodeLabelTextAnchor,
+      node.label.color !== undefined ? node.label.color : settings.nodeLableColor,
+      node.label.fontSize !== undefined ? node.label.fontSize : settings.nodeLabelFontSize,
+      node.label.fontFamily !== undefined ? node.label.fontFamily : settings.nodeLabelFontFamily
+    );
+
+    return new FlowchartyNode(node.id, style, label);
   }
 
   private createLink(link: {

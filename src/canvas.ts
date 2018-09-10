@@ -83,9 +83,9 @@ export class FlowchartyCanvas {
         .attr("class", (d) => (d.id === "" ? "_should_remove_element" : ""));
       enter.append("circle")
         .attr("r", this._settings.circleNodeRadius)
-        .attr("fill", this._settings.circleNodeFill)
-        .attr("stroke", this._settings.circleNodeStroke)
-        .attr("stroke-width", this._settings.circleNodeStrokeWidth);
+        .attr("fill", this._settings.nodeFillColor)
+        .attr("stroke", this._settings.nodeStrokeColor)
+        .attr("stroke-width", this._settings.nodeStrokeWidth);
       enter.html(function (d) {
         return d3.select(this).html() + _this.getTextElementsWithLineBreak(d);
       });
@@ -130,9 +130,9 @@ export class FlowchartyCanvas {
       .attr("stroke-dasharray", function(d) {
         if (!(this instanceof SVGPathElement)) return "";
         if (d.style.connectionType === "marge") {
-          return [0, _this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth, this.getTotalLength()].join(" ");
+          return [0, _this._settings.circleNodeRadius + _this._settings.nodeStrokeWidth, this.getTotalLength()].join(" ");
         } else {
-          return [0, _this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth, this.getTotalLength() - (_this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth + _this._settings.arrowheadSize)].join(" ");
+          return [0, _this._settings.circleNodeRadius + _this._settings.nodeStrokeWidth, this.getTotalLength() - (_this._settings.circleNodeRadius + _this._settings.nodeStrokeWidth + _this._settings.arrowheadSize)].join(" ");
         }
       })
       .attr("stroke-dashoffset", 0);
@@ -141,16 +141,16 @@ export class FlowchartyCanvas {
       .text((d) => (d.label.name))
       .attr("x", (d) => {
         if (d.sourceNode.x === d.targetNode.x) {
-          return d.sourceNode.x - (_this._settings.circleNodeRadius * 2.5 + _this._settings.circleNodeStrokeWidth);
+          return d.sourceNode.x - (_this._settings.circleNodeRadius * 2.5 + _this._settings.nodeStrokeWidth);
         } else {
-          return d.sourceNode.x + (_this._settings.circleNodeRadius * 4 + _this._settings.circleNodeStrokeWidth);
+          return d.sourceNode.x + (_this._settings.circleNodeRadius * 4 + _this._settings.nodeStrokeWidth);
         }
       })
       .attr("y", (d) => {
         if (d.sourceNode.x === d.targetNode.x) {
-          return d.sourceNode.y + (_this._settings.circleNodeRadius * 5 + _this._settings.circleNodeStrokeWidth);
+          return d.sourceNode.y + (_this._settings.circleNodeRadius * 5 + _this._settings.nodeStrokeWidth);
         } else {
-          return d.sourceNode.y - (_this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth);
+          return d.sourceNode.y - (_this._settings.circleNodeRadius + _this._settings.nodeStrokeWidth);
         }
       })
       .attr("text-anchor", (d) => (d.sourceNode.x === d.targetNode.x ? "end" : "start"));
@@ -160,7 +160,7 @@ export class FlowchartyCanvas {
     const elementId = `arrowhead_${this._arrowheadIndex++}`;
     this._g.append("defs").append("marker")
       .attr("id", elementId)
-      .attr("refX", this._settings.arrowheadSize + this._settings.circleNodeStrokeWidth + this._settings.circleNodeRadius)
+      .attr("refX", this._settings.arrowheadSize + this._settings.nodeStrokeWidth + this._settings.circleNodeRadius)
       .attr("refY", this._settings.arrowheadSize / 2)
       .attr("markerWidth", this._settings.arrowheadSize)
       .attr("markerHeight", this._settings.arrowheadSize)

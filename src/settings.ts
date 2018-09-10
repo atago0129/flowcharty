@@ -1,54 +1,78 @@
 export class FlowchartySettings {
 
-  private _shape: string = "circle";
+  private _shape: "circle"|"rect" = "circle";
 
-  private _circleNodeStroke: string = "#000";
+  private _nodeWidth: number = 5;
 
-  private _circleNodeStrokeWidth: number = 2;
+  private _nodeHeight: number = 5;
+
+  private _nodeStrokeColor: string = "#000";
+
+  private _nodeStrokeWidth: number = 2;
 
   private _circleNodeRadius: number = 2.5;
 
-  private _circleNodeFill: string = "#fff";
+  private _nodeFillColor: string = "#fff";
+
+  private _nodeLabelDX: number = -10;
+
+  private _nodeLabelDY: number = -10;
+
+  private _nodeLabelTextAnchor: "start"|"middle"|"end" = "end";
+
+  private _nodeLableColor: string = "#000";
+
+  private _nodeLabelFontSize: string = "10px";
+
+  private _nodeLabelFontFamily: string = "メイリオ";
 
   private _arrowheadSize: number = 12;
 
   private _linkStroke: string = "#000";
 
 
-  get shape(): string {
+  get shape(): "circle"|"rect" {
     return this._shape;
+  }
+
+  get nodeWidth(): number {
+    return this._nodeWidth;
+  }
+
+  get nodeHeight(): number {
+    return this._nodeHeight;
   }
 
   /**
    * get default stroke color of circle node
    * @returns {string}
    */
-  public get circleNodeStroke(): string {
-    return this._circleNodeStroke;
+  public get nodeStrokeColor(): string {
+    return this._nodeStrokeColor;
   }
 
   /**
    * set default stroke color of circle node
    * @param {string} value
    */
-  public set circleNodeStroke(value: string) {
-    this._circleNodeStroke = value;
+  public set nodeStrokeColor(value: string) {
+    this._nodeStrokeColor = value;
   }
 
   /**
    * get default stroke width of circle node
    * @returns {number}
    */
-  public get circleNodeStrokeWidth(): number {
-    return this._circleNodeStrokeWidth;
+  public get nodeStrokeWidth(): number {
+    return this._nodeStrokeWidth;
   }
 
   /**
    * set default stroke width of circle node
    * @param {number} value
    */
-  public set circleNodeStrokeWidth(value: number) {
-    this._circleNodeStrokeWidth = value;
+  public set nodeStrokeWidth(value: number) {
+    this._nodeStrokeWidth = value;
   }
 
   /**
@@ -71,16 +95,40 @@ export class FlowchartySettings {
    * get default fill color of circle node
    * @returns {string}
    */
-  public get circleNodeFill(): string {
-    return this._circleNodeFill;
+  public get nodeFillColor(): string {
+    return this._nodeFillColor;
   }
 
   /**
    * set default fill color of circle node
    * @param {string} value
    */
-  public set circleNodeFill(value: string) {
-    this._circleNodeFill = value;
+  public set nodeFillColor(value: string) {
+    this._nodeFillColor = value;
+  }
+
+  get nodeLabelDX(): number {
+    return this._nodeLabelDX;
+  }
+
+  get nodeLabelDY(): number {
+    return this._nodeLabelDY;
+  }
+
+  get nodeLabelTextAnchor(): "start" | "middle" | "end" {
+    return this._nodeLabelTextAnchor;
+  }
+
+  get nodeLableColor(): string {
+    return this._nodeLableColor;
+  }
+
+  get nodeLabelFontSize(): string {
+    return this._nodeLabelFontSize;
+  }
+
+  get nodeLabelFontFamily(): string {
+    return this._nodeLabelFontFamily;
   }
 
   /**

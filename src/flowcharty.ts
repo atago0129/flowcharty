@@ -36,7 +36,7 @@ export class Flowcharty {
    * @param {string} value
    */
   public set circleNodeStroke(value: string) {
-    this._settings.circleNodeStroke = value;
+    this._settings.nodeStrokeColor = value;
   }
 
   /**
@@ -44,7 +44,7 @@ export class Flowcharty {
    * @param {number} value
    */
   public set circleNodeStrokeWidth(value: number) {
-    this._settings.circleNodeStrokeWidth = value;
+    this._settings.nodeStrokeWidth = value;
   }
 
   /**
@@ -60,7 +60,7 @@ export class Flowcharty {
    * @param {string} value
    */
   public set circleNodeFill(value: string) {
-    this._settings.circleNodeFill = value;
+    this._settings.nodeFillColor = value;
   }
 
   /**
