@@ -1,5 +1,116 @@
 export class FlowchartySettings {
 
+  private _node: {
+    style: {
+     shape: "circle"|"rect",
+      width: number,
+      height: number,
+      strokeColor: string,
+      strokeWidth: number,
+      fillColor: string
+    },
+    label: {
+      dx: number,
+      dy: number,
+      textAnchor: "start"|"middle"|"end",
+      color: string,
+      fontSize: string,
+      fontFamily: string
+    }
+  } = {
+    style: {
+     shape: "circle",
+      width: 5,
+      height: 5,
+      strokeColor: "#000",
+      strokeWidth: 2,
+      fillColor: "#fff"
+    },
+    label: {
+      dx: -10,
+      dy: -10,
+      textAnchor: "end",
+      color: "#000",
+      fontSize: "12px",
+      fontFamily: "メイリオ"
+    }
+  };
+  
+  private _link: {
+    style: {
+      connectionType: "direct"|"marge",
+      curveType: "default"|"stepBefore"|"stepAfter",
+      color: string,
+      strokeWidth: number,
+      headType: "arrow"|"none",
+      arrowSize: number
+    },
+    label: {
+      x: number,
+      y: number,
+      color: string,
+      fontSize: string,
+      fontFamily: string
+    }
+  } = {
+    style: {
+      connectionType: "direct",
+      curveType: "default",
+      color: "#000",
+      strokeWidth: 2,
+      headType: "arrow",
+      arrowSize: 12
+    },
+    label: {
+      x: 0,
+      y: 0,
+      color: "#000",
+      fontSize: "12px",
+      fontFamily: "メイリオ"
+    }
+  };
+  
+  get node(): {
+    style: {
+     shape: "circle"|"rect",
+      width: number,
+      height: number,
+      strokeColor: string,
+      strokeWidth: number,
+      fillColor: string
+    },
+    label: {
+      dx: number,
+      dy: number,
+      textAnchor: "start"|"middle"|"end",
+      color: string,
+      fontSize: string,
+      fontFamily: string
+    }
+  } {
+    return this._node;
+  }
+  
+  private get link(): {
+    style: {
+      connectionType: "direct"|"marge",
+      curveType: "default"|"stepBefore"|"stepAfter",
+      color: string,
+      strokeWidth: number,
+      headType: "arrow"|"none",
+      arrowSize: number
+    },
+    label: {
+      x: number,
+      y: number,
+      color: string,
+      fontSize: string,
+      fontFamily: string
+    }
+  } {
+    return this._link;
+  }
+  
   private _shape: "circle"|"rect" = "circle";
 
   private _nodeWidth: number = 5;
