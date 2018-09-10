@@ -1,6 +1,7 @@
 import {FlowchartyMap} from "./map";
-import {FlowchartyLink} from "./link";
+import {FlowchartyLink, FlowchartyLinkLabel, FlowchartyLinkStyle} from "./link";
 import {FlowchartyNode} from "./node";
+import {style} from "d3-selection";
 
 export class FlowchartyElements {
 
@@ -35,7 +36,20 @@ export class FlowchartyElements {
   constructor(data: {
     nodes: {id: string, label: {name: string, dx?: number, dy?: number, textAnchor?: "start"|"middle"|"end"}}[],
     map: string[][],
-    links: {source: string, target: string, label?: {name: string, positionType?: string}, linkType?: "direct"|"marge", lineType?: "default"|"stepBefore"|"stepAfter"}[]
+    links: {
+      source: string,
+      target: string,
+      style?: {
+        connectionType?: "direct"|"marge",
+        curveType?: "default"|"stepBefore"|"stepAfter",
+        color?: string,
+        strokeWidth?: number,
+        headType?: "arrow"|"none"
+      },
+      label?: {
+        name: string, x?: number, y?: number
+      }
+    }[]
   }) {
     this._dummyNode = new FlowchartyNode("", "");
     this._nodes = data.nodes.map((nodeData) => (
@@ -48,15 +62,64 @@ export class FlowchartyElements {
       )
     ));
     this._map = new FlowchartyMap(data.map.map((nodeIds) => (nodeIds.map((nodeId) => (this.getNodeById(nodeId))))));
-    this._links = data.links.map((link) => {
-      return new FlowchartyLink(
-        this.getNodeById(link.source),
-        this.getNodeById(link.target),
-        link.label,
-        link.linkType,
-        link.lineType
+    this._links = data.links.map((link) => (this.createLink(link)));
+  }
+
+  private createNode(node: {
+    id: string,
+    style?: {
+      shape?: "circle"|"rect",
+      width?: number,
+      height: number,
+      strokeWidth: number,
+      strokeColor: string,
+      fillColor: string
+    },
+    label?: {
+      name?: string,
+      dx?: number,
+      dy?: number,
+      textAnchor?: "start"|"middle"|"end",
+      color?: string,
+      fontSize: string,
+      fontFamily: string
+    }
+  }): FlowchartyNode {
+    const style = new FlowchartyLinkStyle(
+    )
+  }
+
+  private createLink(link: {
+    source: string,
+    target: string,
+    style?: {
+      connectionType?: "direct"|"marge",
+      curveType?: "default"|"stepBefore"|"stepAfter",
+      color?: string,
+      strokeWidth?: number,
+      headType?: "arrow"|"none"
+    },
+    label?: {
+      name: string, x?: number, y?: number
+    }
+  }): FlowchartyLink {
+    let linkStyle: FlowchartyLinkStyle;
+    if (link.style) {
+      linkStyle = new FlowchartyLinkStyle(
+        link.style.connectionType, link.style.curveType, link.style.color, link.style.strokeWidth, link.style.headType
       );
-    })
+    } else {
+      linkStyle = new FlowchartyLinkStyle();
+    }
+
+    let linkLabel: FlowchartyLinkLabel;
+    if (link.label) {
+      linkLabel = new FlowchartyLinkLabel(link.label.name, link.label.x, link.label.y);
+    } else {
+      linkLabel = new FlowchartyLinkLabel();
+    }
+
+    return new FlowchartyLink(this.getNodeById(link.source), this.getNodeById(link.target), linkStyle, linkLabel);
   }
 
   /**

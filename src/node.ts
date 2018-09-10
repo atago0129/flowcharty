@@ -1,10 +1,7 @@
 export class FlowchartyNode {
   private _nodePosition: {x: number, y: number} = {x: 0, y: 0};
 
-  private readonly _nameLabelPosition: {dx: number, dy:number, textAnchor: "start"|"middle"|"end"};
-
-  constructor(private _id: string, private _name: string, dx: number = -10, dy: number = -10, textAnchor: "start"|"middle"|"end" = "end") {
-    this._nameLabelPosition = {dx: dx, dy: dy, textAnchor: textAnchor};
+  constructor(private _id: string, private _style: FlowchartyNodeStyle, private _label: FlowchartyNodeLabel) {
   }
 
   /**
@@ -15,12 +12,12 @@ export class FlowchartyNode {
     return this._id;
   }
 
-  /**
-   * get node name
-   * @returns {string}
-   */
-  get name(): string {
-    return this._name;
+  get style(): FlowchartyNodeStyle {
+    return this._style;
+  }
+
+  get label(): FlowchartyNodeLabel {
+    return this._label;
   }
 
   /**
@@ -54,14 +51,79 @@ export class FlowchartyNode {
   get y(): number {
     return this._nodePosition.y;
   }
+}
 
-  /**
-   * get name label position
-   *  - dx: position diff of "x"
-   *  - dy: position diff of "y"
-   * @returns {object}
-   */
-  get nameLabelPosition() {
-    return this._nameLabelPosition;
+export class FlowchartyNodeStyle {
+  constructor(
+    private _shape: "circle"|"rect",
+    private _width: number,
+    private _height: number,
+    private _strokeWidth: number,
+    private _strokeColor: string,
+    private _fillColor: string){
+  }
+
+  get shape(): "circle" | "rect" {
+    return this._shape;
+  }
+
+  get width(): number {
+    return this._width;
+  }
+
+  get height(): number {
+    return this._height;
+  }
+
+  get strokeWidth(): number {
+    return this._strokeWidth;
+  }
+
+  get strokeColor(): string {
+    return this._strokeColor;
+  }
+
+  get fillColor(): string {
+    return this._fillColor;
+  }
+}
+
+export class FlowchartyNodeLabel {
+  constructor(
+    private _name: string,
+    private _dx: number,
+    private _dy: number,
+    private _textAnchor: "start"|"middle"|"end",
+    private _color: string,
+    private _fontSize: string,
+    private _fontFamily: string) {
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  get dx(): number {
+    return this._dx;
+  }
+
+  get dy(): number {
+    return this._dy;
+  }
+
+  get textAnchor(): "start" | "middle" | "end" {
+    return this._textAnchor;
+  }
+
+  get color(): string {
+    return this._color;
+  }
+
+  get fontSize(): string {
+    return this._fontSize;
+  }
+
+  get fontFamily(): string {
+    return this._fontFamily;
   }
 }

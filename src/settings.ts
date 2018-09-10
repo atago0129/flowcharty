@@ -1,4 +1,7 @@
 export class FlowchartySettings {
+
+  private _shape: string = "circle";
+
   private _circleNodeStroke: string = "#000";
 
   private _circleNodeStrokeWidth: number = 2;
@@ -10,6 +13,11 @@ export class FlowchartySettings {
   private _arrowheadSize: number = 12;
 
   private _linkStroke: string = "#000";
+
+
+  get shape(): string {
+    return this._shape;
+  }
 
   /**
    * get default stroke color of circle node

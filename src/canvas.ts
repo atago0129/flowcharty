@@ -13,6 +13,8 @@ export class FlowchartyCanvas {
 
   private _heightInterval: number = 0;
 
+  private _arrowheadIndex: number = 0;
+
   /**
    * @param {d3.Selection} _svg
    * @param {FlowchartySettings} _settings
@@ -43,16 +45,6 @@ export class FlowchartyCanvas {
     // init arrowhead
     this._g.append("defs").append("marker")
       .attr("id", "arrowhead")
-      .attr("refX", this._settings.arrowheadSize + this._settings.circleNodeStrokeWidth + this._settings.circleNodeRadius)
-      .attr("refY", this._settings.arrowheadSize / 2)
-      .attr("markerWidth", this._settings.arrowheadSize)
-      .attr("markerHeight", this._settings.arrowheadSize)
-      .attr("orient", "auto")
-      .append("path")
-      .attr("d", ["M", "0,0", "V", this._settings.arrowheadSize, "L", [this._settings.arrowheadSize, this._settings.arrowheadSize /2].join(","), "Z"].join(" "))
-      .attr("fill", "#000");
-    this._g.append("defs").append("marker")
-      .attr("id", "arrowhead_for_marge")
       .attr("refX", this._settings.arrowheadSize)
       .attr("refY", this._settings.arrowheadSize / 2)
       .attr("markerWidth", this._settings.arrowheadSize)
@@ -126,15 +118,9 @@ export class FlowchartyCanvas {
     enter.append("path")
       .style("fill", "none")
       .style("stroke", this._settings.linkStroke)
-      .attr("marker-end", (d) => {
-        if (d.linkType === "marge") {
-          return "url(#arrowhead_for_marge)";
-        } else {
-          return "url(#arrowhead)";
-        }
-      })
+      .attr("marker-end", "url(#arrowhead)")
       .attr("d", (d) => {
-        const margin = d.linkType === "marge" ? this._heightInterval / 5 : 0;
+        const margin = d.style.connectionType === "marge" ? this._heightInterval / 5 : 0;
         const lineData = [
           {x: d.sourceNode.x, y: d.sourceNode.y},
           {x: d.targetNode.x, y: d.targetNode.y - margin},
@@ -143,7 +129,7 @@ export class FlowchartyCanvas {
       })
       .attr("stroke-dasharray", function(d) {
         if (!(this instanceof SVGPathElement)) return "";
-        if (d.linkType === "marge") {
+        if (d.style.connectionType === "marge") {
           return [0, _this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth, this.getTotalLength()].join(" ");
         } else {
           return [0, _this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth, this.getTotalLength() - (_this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth + _this._settings.arrowheadSize)].join(" ");
@@ -170,14 +156,29 @@ export class FlowchartyCanvas {
       .attr("text-anchor", (d) => (d.sourceNode.x === d.targetNode.x ? "end" : "start"));
   }
 
+  private generateArrowhead(link: FlowchartyLink): string {
+    const elementId = `arrowhead_${this._arrowheadIndex++}`;
+    this._g.append("defs").append("marker")
+      .attr("id", elementId)
+      .attr("refX", this._settings.arrowheadSize + this._settings.circleNodeStrokeWidth + this._settings.circleNodeRadius)
+      .attr("refY", this._settings.arrowheadSize / 2)
+      .attr("markerWidth", this._settings.arrowheadSize)
+      .attr("markerHeight", this._settings.arrowheadSize)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("d", ["M", "0,0", "V", this._settings.arrowheadSize, "L", [this._settings.arrowheadSize, this._settings.arrowheadSize /2].join(","), "Z"].join(" "))
+      .attr("fill", "#000");
+    return elementId;
+  }
+
   /**
    * @param link
    * @returns function
    */
   private decideLineType(link: FlowchartyLink) {
-    if (link.lineType === "stepBefore") {
+    if (link.style.curveType === "stepBefore") {
       return this.lineStepBefore;
-    } else if(link.lineType === "stepAfter") {
+    } else if(link.style.curveType === "stepAfter") {
       return this.lineStepAfter;
     }
     if (link.sourceNode.x === link.targetNode.x || link.sourceNode.y === link.targetNode.y) {

@@ -5,9 +5,8 @@ export class FlowchartyLink {
   constructor(
     private _sourceNode: FlowchartyNode,
     private _targetNode: FlowchartyNode,
-    private _label: {name: string, positionType?: string} = {name: ""},
-    private _linkType: "direct"|"marge" = "direct",
-    private _lineType: "default"|"stepBefore"|"stepAfter" = "default")
+    private _style: FlowchartyLinkStyle,
+    private _label: FlowchartyLinkLabel)
   {
   }
 
@@ -28,30 +27,65 @@ export class FlowchartyLink {
   }
 
   /**
-   * get label data
-   *  - name: name of link path
-   *  - positionType: [future]position of link path (ex. top, bottom, left, right)
-   * @returns {object}
+   * get link style
+   * @returns {FlowchartyLinkStyle}
    */
-  public get label(): { name: string; positionType?: string } {
+  get style(): FlowchartyLinkStyle {
+    return this._style;
+  }
+
+  /**
+   * get link label
+   * @returns {FlowchartyLinkLabel}
+   */
+  get label(): FlowchartyLinkLabel {
     return this._label;
   }
+}
 
-  /**
-   * get link type
-   *  - "direct": directly connect to node
-   *  - "marge": slide slightly off the node
-   * @returns {"direct"|"marge"}
-   */
-  public get linkType(): string {
-    return this._linkType;
+export class FlowchartyLinkStyle {
+  constructor(
+    private _connectionType: "direct"|"marge" = "direct",
+    private _curveType: "default"|"stepBefore"|"stepAfter" = "default",
+    private _color: string = "#000",
+    private _strokeWidth: number = 2,
+    private _headType: "arrow"|"none" = "arrow"){
   }
 
-  /**
-   * get line type
-   * @returns {"default"|"stepBefore"|"stepAfter"}
-   */
-  public get lineType(): "default"|"stepBefore"|"stepAfter" {
-    return this._lineType;
+  get connectionType(): "direct" | "marge" {
+    return this._connectionType;
+  }
+
+  get curveType(): "default" | "stepBefore" | "stepAfter" {
+    return this._curveType;
+  }
+
+  get color(): string {
+    return this._color;
+  }
+
+  get strokeWidth(): number {
+    return this._strokeWidth;
+  }
+
+  get headType(): "arrow" | "none" {
+    return this._headType;
+  }
+}
+
+export class FlowchartyLinkLabel {
+  constructor(private _name: string = "", private _x: number|undefined = undefined, private _y: number|undefined = undefined) {
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  get x(): number | undefined {
+    return this._x;
+  }
+
+  get y(): number | undefined {
+    return this._y;
   }
 }
