@@ -1,10 +1,8 @@
-import {FlowchartyNode} from "./node";
-
 export class FlowchartyLink {
 
   constructor(
-    private _sourceNode: FlowchartyNode,
-    private _targetNode: FlowchartyNode,
+    private _sourceNodeId: string,
+    private _targetNodeId: string,
     private _style: FlowchartyLinkStyle,
     private _label: FlowchartyLinkLabel)
   {
@@ -12,18 +10,18 @@ export class FlowchartyLink {
 
   /**
    * get source node instance of this link path
-   * @returns {FlowchartyNode}
+   * @returns {string}
    */
-  public get sourceNode(): FlowchartyNode {
-    return this._sourceNode;
+  public get sourceNodeId(): string {
+    return this._sourceNodeId;
   }
 
   /**
    * get target node instance of this link path
-   * @returns {FlowchartyNode}
+   * @returns {string}
    */
-  public get targetNode(): FlowchartyNode {
-    return this._targetNode;
+  public get targetNodeId(): string {
+    return this._targetNodeId;
   }
 
   /**
@@ -45,11 +43,12 @@ export class FlowchartyLink {
 
 export class FlowchartyLinkStyle {
   constructor(
-    private _connectionType: "direct"|"marge" = "direct",
-    private _curveType: "default"|"stepBefore"|"stepAfter" = "default",
-    private _color: string = "#000",
-    private _strokeWidth: number = 2,
-    private _headType: "arrow"|"none" = "arrow"){
+    private _connectionType: "direct"|"marge",
+    private _curveType: "default"|"stepBefore"|"stepAfter",
+    private _color: string,
+    private _width: number,
+    private _headType: "arrow"|"none",
+    private _arrowheadSize: number){
   }
 
   get connectionType(): "direct" | "marge" {
@@ -65,27 +64,49 @@ export class FlowchartyLinkStyle {
   }
 
   get strokeWidth(): number {
-    return this._strokeWidth;
+    return this._width;
   }
 
   get headType(): "arrow" | "none" {
     return this._headType;
   }
+
+  get arrowHeadSize(): number {
+    return this._arrowheadSize;
+  }
 }
 
 export class FlowchartyLinkLabel {
-  constructor(private _name: string = "", private _x: number|undefined = undefined, private _y: number|undefined = undefined) {
+  constructor(
+    private _name: string,
+    private _dx: number|undefined,
+    private _dy: number|undefined,
+    private _color: string,
+    private _fontSize: string,
+    private _fontFamily: string) {
   }
 
   get name(): string {
     return this._name;
   }
 
-  get x(): number | undefined {
-    return this._x;
+  get dx(): number | undefined {
+    return this._dx;
   }
 
-  get y(): number | undefined {
-    return this._y;
+  get dy(): number | undefined {
+    return this._dy;
+  }
+
+  get color(): string {
+    return this._color;
+  }
+
+  get fontSize(): string {
+    return this._fontSize;
+  }
+
+  get fontFamily(): string {
+    return this._fontFamily;
   }
 }

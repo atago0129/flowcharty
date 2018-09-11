@@ -55,15 +55,15 @@ export class FlowchartyNode {
 
 export class FlowchartyNodeStyle {
   constructor(
-    private _shape: "circle"|"rect",
+    private _shape: "circle"|"rect"|"nothing",
     private _width: number,
     private _height: number,
-    private _strokeWidth: number,
     private _strokeColor: string,
+    private _strokeWidth: number,
     private _fillColor: string){
   }
 
-  get shape(): "circle" | "rect" {
+  get shape(): "circle"|"rect"|"nothing" {
     return this._shape;
   }
 
@@ -75,12 +75,12 @@ export class FlowchartyNodeStyle {
     return this._height;
   }
 
-  get strokeWidth(): number {
-    return this._strokeWidth;
-  }
-
   get strokeColor(): string {
     return this._strokeColor;
+  }
+
+  get strokeWidth(): number {
+    return this._strokeWidth;
   }
 
   get fillColor(): string {

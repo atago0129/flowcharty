@@ -2,7 +2,7 @@ export class FlowchartySettings {
 
   private _node: {
     style: {
-     shape: "circle"|"rect",
+      shape: "circle"|"rect"|"nothing",
       width: number,
       height: number,
       strokeColor: string,
@@ -20,8 +20,8 @@ export class FlowchartySettings {
   } = {
     style: {
      shape: "circle",
-      width: 5,
-      height: 5,
+      width: 15,
+      height: 15,
       strokeColor: "#000",
       strokeWidth: 2,
       fillColor: "#fff"
@@ -41,13 +41,13 @@ export class FlowchartySettings {
       connectionType: "direct"|"marge",
       curveType: "default"|"stepBefore"|"stepAfter",
       color: string,
-      strokeWidth: number,
+      width: number,
       headType: "arrow"|"none",
-      arrowSize: number
+      arrowheadSize: number
     },
     label: {
-      x: number,
-      y: number,
+      x: number|undefined,
+      y: number|undefined,
       color: string,
       fontSize: string,
       fontFamily: string
@@ -57,101 +57,41 @@ export class FlowchartySettings {
       connectionType: "direct",
       curveType: "default",
       color: "#000",
-      strokeWidth: 2,
+      width: 2,
       headType: "arrow",
-      arrowSize: 12
+      arrowheadSize: 6
     },
     label: {
-      x: 0,
-      y: 0,
+      x: undefined,
+      y: undefined,
       color: "#000",
       fontSize: "12px",
       fontFamily: "メイリオ"
     }
   };
   
-  get node(): {
-    style: {
-     shape: "circle"|"rect",
-      width: number,
-      height: number,
-      strokeColor: string,
-      strokeWidth: number,
-      fillColor: string
-    },
-    label: {
-      dx: number,
-      dy: number,
-      textAnchor: "start"|"middle"|"end",
-      color: string,
-      fontSize: string,
-      fontFamily: string
-    }
-  } {
-    return this._node;
+  get shape(): "circle"|"rect"|"nothing" {
+    return this._node.style.shape;
   }
-  
-  private get link(): {
-    style: {
-      connectionType: "direct"|"marge",
-      curveType: "default"|"stepBefore"|"stepAfter",
-      color: string,
-      strokeWidth: number,
-      headType: "arrow"|"none",
-      arrowSize: number
-    },
-    label: {
-      x: number,
-      y: number,
-      color: string,
-      fontSize: string,
-      fontFamily: string
-    }
-  } {
-    return this._link;
-  }
-  
-  private _shape: "circle"|"rect" = "circle";
 
-  private _nodeWidth: number = 5;
-
-  private _nodeHeight: number = 5;
-
-  private _nodeStrokeColor: string = "#000";
-
-  private _nodeStrokeWidth: number = 2;
-
-  private _circleNodeRadius: number = 2.5;
-
-  private _nodeFillColor: string = "#fff";
-
-  private _nodeLabelDX: number = -10;
-
-  private _nodeLabelDY: number = -10;
-
-  private _nodeLabelTextAnchor: "start"|"middle"|"end" = "end";
-
-  private _nodeLableColor: string = "#000";
-
-  private _nodeLabelFontSize: string = "10px";
-
-  private _nodeLabelFontFamily: string = "メイリオ";
-
-  private _arrowheadSize: number = 12;
-
-  private _linkStroke: string = "#000";
-
-
-  get shape(): "circle"|"rect" {
-    return this._shape;
+  set shape(value: "circle"|"rect"|"nothing") {
+    this._node.style.shape = value;
   }
 
   get nodeWidth(): number {
-    return this._nodeWidth;
+    return this._node.style.width;
+  }
+
+  set nodeWidth(value: number) {
+    this._node.style.width = value;
   }
 
   get nodeHeight(): number {
-    return this._nodeHeight;
+    return this._node.style.height;
+  }
+
+  set nodeHeight(value: number) {
+    this._node.style.height = value;
   }
 
   /**
@@ -159,7 +99,7 @@ export class FlowchartySettings {
    * @returns {string}
    */
   public get nodeStrokeColor(): string {
-    return this._nodeStrokeColor;
+    return this._node.style.strokeColor;
   }
 
   /**
@@ -167,7 +107,7 @@ export class FlowchartySettings {
    * @param {string} value
    */
   public set nodeStrokeColor(value: string) {
-    this._nodeStrokeColor = value;
+    this._node.style.strokeColor = value;
   }
 
   /**
@@ -175,7 +115,7 @@ export class FlowchartySettings {
    * @returns {number}
    */
   public get nodeStrokeWidth(): number {
-    return this._nodeStrokeWidth;
+    return this._node.style.strokeWidth;
   }
 
   /**
@@ -183,23 +123,7 @@ export class FlowchartySettings {
    * @param {number} value
    */
   public set nodeStrokeWidth(value: number) {
-    this._nodeStrokeWidth = value;
-  }
-
-  /**
-   * get default radius of circle node
-   * @returns {number}
-   */
-  public get circleNodeRadius(): number {
-    return this._circleNodeRadius;
-  }
-
-  /**
-   * set default radius of circle node
-   * @param {number} value
-   */
-  public set circleNodeRadius(value: number) {
-    this._circleNodeRadius = value;
+    this._node.style.width = value;
   }
 
   /**
@@ -207,7 +131,7 @@ export class FlowchartySettings {
    * @returns {string}
    */
   public get nodeFillColor(): string {
-    return this._nodeFillColor;
+    return this._node.style.fillColor;
   }
 
   /**
@@ -215,62 +139,142 @@ export class FlowchartySettings {
    * @param {string} value
    */
   public set nodeFillColor(value: string) {
-    this._nodeFillColor = value;
+    this._node.style.fillColor = value;
   }
 
   get nodeLabelDX(): number {
-    return this._nodeLabelDX;
+    return this._node.label.dx;
+  }
+
+  set nodeLabelDX(value: number) {
+    this._node.label.dx = value;
   }
 
   get nodeLabelDY(): number {
-    return this._nodeLabelDY;
+    return this._node.label.dy;
+  }
+
+  set nodeLabelDY(value: number) {
+    this._node.label.dy = value;
   }
 
   get nodeLabelTextAnchor(): "start" | "middle" | "end" {
-    return this._nodeLabelTextAnchor;
+    return this._node.label.textAnchor;
   }
 
-  get nodeLableColor(): string {
-    return this._nodeLableColor;
+  set nodeLabelTextAnchor(value: "start" | "middle" | "end") {
+    this._node.label.textAnchor = value;
+  }
+
+  get nodeLabelColor(): string {
+    return this._node.label.color;
+  }
+
+  set nodoLabelColor(value: string) {
+    this._node.label.color = value;
   }
 
   get nodeLabelFontSize(): string {
-    return this._nodeLabelFontSize;
+    return this._node.label.fontSize;
+  }
+
+  set nodeLabelFontSize(value: string) {
+    this._node.label.fontSize = value;
   }
 
   get nodeLabelFontFamily(): string {
-    return this._nodeLabelFontFamily;
+    return this._node.label.fontFamily;
   }
 
-  /**
-   * get default size of arrowhead
-   * @returns {number}
-   */
-  public get arrowheadSize(): number {
-    return this._arrowheadSize;
+  set nodeLabelFontFamily(value: string) {
+    this._node.label.fontFamily = value;
   }
 
-  /**
-   * set default size of arrowhead
-   * @param {number} value
-   */
-  public set arrowheadSize(value: number) {
-    this._arrowheadSize = value;
+  get linkConnectionType(): "direct"|"marge" {
+    return this._link.style.connectionType;
   }
 
-  /**
-   * get default stroke color of link
-   * @returns {string}
-   */
-  public get linkStroke(): string {
-    return this._linkStroke;
+  set linkConnectionType(value: "direct"|"marge") {
+    this._link.style.connectionType = value;
   }
 
-  /**
-   * set default stroke color of link
-   * @param {string} value
-   */
-  public set linkStroke(value: string) {
-    this._linkStroke = value;
+  get linkCurveType(): "default"|"stepBefore"|"stepAfter" {
+    return this._link.style.curveType;
+  }
+
+  set linkCurveType(value: "default"|"stepBefore"|"stepAfter") {
+    this._link.style.curveType = value;
+  }
+
+  get linkColor(): string {
+    return this._link.style.color;
+  }
+
+  set linkColor(value: string) {
+    this._link.style.color = value;
+  }
+
+  get linkWidth(): number {
+    return this._link.style.width;
+  }
+
+  set linkWidth(value: number) {
+    this._link.style.width = value;
+  }
+
+  get linkHeadType(): "arrow"|"none" {
+    return this._link.style.headType;
+  }
+
+  set linkHeadType(value: "arrow"|"none") {
+    this._link.style.headType = value;
+  }
+
+  get linkArrowheadSize(): number {
+    return this._link.style.arrowheadSize;
+  }
+
+  set linkArrowheadSize(value: number) {
+    this._link.style.arrowheadSize = value;
+  }
+
+  get linkLabelX(): number|undefined {
+    return this._link.label.x;
+  }
+
+  set linkLabelX(value: number|undefined) {
+    this._link.label.x = value;
+  }
+
+  get linkLabelY(): number|undefined {
+    return this._link.label.y;
+  }
+
+  set linkLabelY(value: number|undefined) {
+    this._link.label.y = value;
+  }
+
+  get linkLabelColor(): string {
+    return this._link.label.color;
+  }
+
+  set linkLabelColor(value: string) {
+    this._link.label.color = value;
+  }
+
+  get linkLabelFontSize(): string {
+    return this._link.label.fontSize;
+  }
+
+  set linkLabelFontSize(value: string) {
+    this._link.label.fontSize = value;
+  }
+
+  get linkLabelFontFamily(): string {
+    return this._link.label.fontFamily;
+  }
+
+  set linkLabelFontFamily(value: string) {
+    this._link.label.fontFamily = value;
   }
 }
