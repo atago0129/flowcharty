@@ -46,7 +46,7 @@ export class FlowchartyLinkStyle {
     private _connectionType: "direct"|"marge",
     private _curveType: "default"|"stepBefore"|"stepAfter",
     private _color: string,
-    private _width: number,
+    private _strokeWidth: number,
     private _headType: "arrow"|"none",
     private _arrowheadSize: number){
   }
@@ -64,7 +64,7 @@ export class FlowchartyLinkStyle {
   }
 
   get strokeWidth(): number {
-    return this._width;
+    return this._strokeWidth;
   }
 
   get headType(): "arrow" | "none" {

@@ -1,4 +1,4 @@
-import {Flowcharty} from "../src/flowcharty";
+import Flowcharty from "../src/flowcharty";
 import * as d3 from "d3";
 
 var data = {
@@ -25,8 +25,8 @@ var data = {
     {source: 'hoge', target: 'piyo', label: {name: 'yes'}},
     {source: 'piyo', target: 'piyopiyo', label: {name: 'yes'}},
     {source: 'piyo', target: 'hogehoge', label: {name: 'no'}},
-    {source: 'fuga', target: 'goal', linkType: 'marge'},
-    {source: 'piyopiyo', target: 'hogehoge', linkType: 'marge'},
+    {source: 'fuga', target: 'goal', style: {connectionType: 'marge'}},
+    {source: 'piyopiyo', target: 'hogehoge', style: {connectionType: 'marge'}},
     {source: 'hogehoge', target: 'goal'}
   ]
 };

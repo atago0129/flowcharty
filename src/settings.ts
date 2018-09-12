@@ -20,8 +20,8 @@ export class FlowchartySettings {
   } = {
     style: {
      shape: "circle",
-      width: 15,
-      height: 15,
+      width: 10,
+      height: 10,
       strokeColor: "#000",
       strokeWidth: 2,
       fillColor: "#fff"

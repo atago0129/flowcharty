@@ -32,7 +32,7 @@ export class FlowchartyLinkFactory {
     connectionType?: "direct"|"marge",
     curveType?: "default"|"stepBefore"|"stepAfter",
     color?: string,
-    width?: number,
+    strokeWidth?: number,
     headType?: "arrow"|"none",
     arrowheadSize?: number
   }|undefined): FlowchartyLinkStyle {
@@ -42,7 +42,7 @@ export class FlowchartyLinkFactory {
         linkStyle.connectionType !== undefined ? linkStyle.connectionType : this._settings.linkConnectionType,
         linkStyle.curveType !== undefined ? linkStyle.curveType : this._settings.linkCurveType,
         linkStyle.color !== undefined ? linkStyle.color : this._settings.linkColor,
-        linkStyle.width !== undefined ? linkStyle.width : this._settings.linkWidth,
+        linkStyle.strokeWidth !== undefined ? linkStyle.strokeWidth : this._settings.linkWidth,
         linkStyle.headType !== undefined ? linkStyle.headType : this._settings.linkHeadType,
         linkStyle.arrowheadSize !== undefined ? linkStyle.arrowheadSize : this._settings.linkArrowheadSize
       );

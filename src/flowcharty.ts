@@ -6,7 +6,7 @@ import {FlowchartyNodeFactory} from "./node_factory";
 import {FlowchartyLinkFactory} from "./link_factory";
 import {FlowchartyMap} from "./map";
 
-export class Flowcharty {
+export default class Flowcharty {
 
   /**
    * @param {FlowchartySettings} _settings
@@ -77,8 +77,8 @@ export class Flowcharty {
         data.nodes.map(node => nodeFactory.create(node)),
         data.links.map(link => linkFactory.create(link)),
         new FlowchartyMap(data.map)
-      ),
-      this._settings);
+      )
+    );
     canvas.render();
   }
 
