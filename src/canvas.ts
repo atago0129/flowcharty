@@ -127,13 +127,16 @@ export class FlowchartyCanvas {
           return [
             0,
             _this.decideLinkMargin(d, "from") + _this._elements.getNodeById(d.sourceNodeId).style.strokeWidth / 2,
-            this.getTotalLength() - ((d.style.headType === "arrow" ? d.style.arrowHeadSize : 0) + _this._elements.getNodeById(d.sourceNodeId).style.strokeWidth / 2)
+            this.getTotalLength() - ((d.style.headType === "arrow" ? d.style.arrowHeadSize : 0) + _this._elements.getNodeById(d.sourceNodeId).style.strokeWidth / 2),
+            this.getTotalLength()
           ].join(" ");
         } else {
+          console.log(d.sourceNodeId, d.targetNodeId, _this.decideLinkMargin(d, "from"), _this.decideLinkMargin(d, "to"));
           return [
             0,
             _this.decideLinkMargin(d, "from") + _this._elements.getNodeById(d.sourceNodeId).style.strokeWidth / 2,
-            this.getTotalLength() - (_this.decideLinkMargin(d, "from") * 2 + _this.decideLinkMargin(d, "to") + (d.style.headType === "arrow" ? d.style.arrowHeadSize : 0) + _this._elements.getNodeById(d.sourceNodeId).style.strokeWidth / 2)
+            this.getTotalLength() - (_this.decideLinkMargin(d, "from") + _this.decideLinkMargin(d, "to") + (d.style.headType === "arrow" ? d.style.arrowHeadSize : 0) + _this._elements.getNodeById(d.sourceNodeId).style.strokeWidth / 2),
+            this.getTotalLength()
           ].join(" ");
         }
       })
@@ -144,7 +147,7 @@ export class FlowchartyCanvas {
       .style("fill", d => d.label.color)
       .attr("x", d => this._elements.getNodeById(d.sourceNodeId).x)
       .attr("y", d => this._elements.getNodeById(d.sourceNodeId).y)
-      .attr("dx", d => {
+      .attr("dx", d => { // TODO: fix bug...
         if (d.label.dx) return d.label.dx;
         const source = this._elements.getNodeById(d.sourceNodeId);
         const target = this._elements.getNodeById(d.targetNodeId);
@@ -156,16 +159,14 @@ export class FlowchartyCanvas {
           return -20;
         }
       })
-      .attr("dy", d => {
+      .attr("dy", d => { // TODO: fix bug...
         if (d.label.dy) return d.label.dy;
         const source = this._elements.getNodeById(d.sourceNodeId);
         const target = this._elements.getNodeById(d.targetNodeId);
         if (source.y === target.y) {
-          return 10;
-        } else if (source.y < target.y) {
-          return 20;
-        } else {
-          return -20;
+          return -10;
+        } else{
+          return source.x === target.x ? 20 : -20;
         }
       })
       .attr("text-anchor", d => {
@@ -215,7 +216,7 @@ export class FlowchartyCanvas {
         return edge.style.width / 2;
       }
     }
-    if (this.decideCurveType(link) === "stepBefore") {
+    if (this.decideCurveType(link) === "stepAfter" && edgeType === "from") {
       if (edge.style.shape === "circle") {
         return edge.style.rx;
       } else {
