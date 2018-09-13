@@ -147,38 +147,34 @@ export class FlowchartyCanvas {
       .style("fill", d => d.label.color)
       .attr("x", d => this._elements.getNodeById(d.sourceNodeId).x)
       .attr("y", d => this._elements.getNodeById(d.sourceNodeId).y)
-      .attr("dx", d => { // TODO: fix bug...
+      .attr("dx", d => {
         if (d.label.dx) return d.label.dx;
         const source = this._elements.getNodeById(d.sourceNodeId);
         const target = this._elements.getNodeById(d.targetNodeId);
-        if (source.x === target.x) {
+        const curveType = this.decideCurveType(d);
+        if (source.x === target.x || curveType === "stepAfter") {
           return -10;
-        } else if (source.x < target.x) {
-          return 20;
-        } else {
-          return -20;
         }
+        return 20;
       })
-      .attr("dy", d => { // TODO: fix bug...
+      .attr("dy", d => {
         if (d.label.dy) return d.label.dy;
         const source = this._elements.getNodeById(d.sourceNodeId);
         const target = this._elements.getNodeById(d.targetNodeId);
-        if (source.y === target.y) {
-          return -10;
-        } else{
-          return source.x === target.x ? 20 : -20;
+        const curveType = this.decideCurveType(d);
+        if (source.x === target.x || curveType === "stepAfter") {
+          return 20;
         }
+        return -10;
       })
       .attr("text-anchor", d => {
         const source = this._elements.getNodeById(d.sourceNodeId);
         const target = this._elements.getNodeById(d.targetNodeId);
-        if (source.x === target.x) {
-          return "end";
-        } else if (source.x < target.x) {
-          return "start";
-        } else {
+        const curveType = this.decideCurveType(d);
+        if (source.x === target.x || curveType === "stepAfter") {
           return "end";
         }
+        return "start";
       });
   }
 
