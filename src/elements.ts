@@ -12,7 +12,7 @@ export class FlowchartyElements {
    * @param {FlowchartyMap} _map
    */
   constructor(private _nodes: FlowchartyNode[], private _links: FlowchartyLink[], private _map: FlowchartyMap) {
-    const dummyStyle: FlowchartyNodeStyle = new FlowchartyNodeStyle("nothing", 0, 0, "#000", 0, "#000");
+    const dummyStyle: FlowchartyNodeStyle = new FlowchartyNodeStyle("nothing", 0, 0, 0, 0, "#000", 0, "#000");
     const dummyLabel: FlowchartyNodeLabel = new FlowchartyNodeLabel("", 0, 0, "start", "#000", "0", "");
     this._dummyNode = new FlowchartyNode("", dummyStyle, dummyLabel);
   }

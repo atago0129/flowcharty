@@ -58,6 +58,8 @@ export class FlowchartyNodeStyle {
     private _shape: "circle"|"rect"|"nothing",
     private _width: number,
     private _height: number,
+    private _rx: number,
+    private _ry: number,
     private _strokeColor: string,
     private _strokeWidth: number,
     private _fillColor: string){
@@ -73,6 +75,14 @@ export class FlowchartyNodeStyle {
 
   get height(): number {
     return this._height;
+  }
+
+  get rx(): number {
+    return this._rx;
+  }
+
+  get ry(): number {
+    return this._ry;
   }
 
   get strokeColor(): string {

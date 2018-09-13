@@ -3,7 +3,6 @@ import {FlowchartyElements} from "./elements";
 import * as d3 from "d3";
 import {FlowchartyNode} from "./node";
 import {FlowchartyLink} from "./link";
-import {style} from "d3";
 
 export class FlowchartyCanvas {
 
@@ -65,8 +64,8 @@ export class FlowchartyCanvas {
         .attr("class", d => this._elements.getNodeById(d).id === "" ? "_should_remove_element" : "");
       enter.append("ellipse")
         .attr("class", d => this._elements.getNodeById(d).style.shape !== "circle" ? "_should_remove_element" : "")
-        .attr("rx", d => this._elements.getNodeById(d).style.width / 2)
-        .attr("ry", d => this._elements.getNodeById(d).style.height / 2)
+        .attr("rx", d => this._elements.getNodeById(d).style.rx)
+        .attr("ry", d => this._elements.getNodeById(d).style.ry)
         .attr("fill", d => this._elements.getNodeById(d).style.fillColor)
         .attr("stroke", d => this._elements.getNodeById(d).style.strokeColor)
         .attr("stroke-width", d => this._elements.getNodeById(d).style.strokeWidth);
@@ -74,6 +73,8 @@ export class FlowchartyCanvas {
         .attr("class", d => (this._elements.getNodeById(d).style.shape !== "rect" ? "_should_remove_element" : ""))
         .attr("width", d => this._elements.getNodeById(d).style.width)
         .attr("height", d => this._elements.getNodeById(d).style.height)
+        .attr("rx", d => this._elements.getNodeById(d).style.rx)
+        .attr("ry", d => this._elements.getNodeById(d).style.ry)
         .attr("x", d => - (this._elements.getNodeById(d).style.width / 2))
         .attr("y", d => - (this._elements.getNodeById(d).style.height / 2))
         .attr("fill", d => this._elements.getNodeById(d).style.fillColor)
@@ -144,6 +145,7 @@ export class FlowchartyCanvas {
       .attr("x", d => this._elements.getNodeById(d.sourceNodeId).x)
       .attr("y", d => this._elements.getNodeById(d.sourceNodeId).y)
       .attr("dx", d => {
+        if (d.label.dx) return d.label.dx;
         const source = this._elements.getNodeById(d.sourceNodeId);
         const target = this._elements.getNodeById(d.targetNodeId);
         if (source.x === target.x) {
@@ -155,6 +157,7 @@ export class FlowchartyCanvas {
         }
       })
       .attr("dy", d => {
+        if (d.label.dy) return d.label.dy;
         const source = this._elements.getNodeById(d.sourceNodeId);
         const target = this._elements.getNodeById(d.targetNodeId);
         if (source.y === target.y) {
@@ -197,16 +200,33 @@ export class FlowchartyCanvas {
   private decideLinkMargin(link: FlowchartyLink, edgeType: "from"|"to") {
     const source: FlowchartyNode = this._elements.getNodeById(link.sourceNodeId);
     const target: FlowchartyNode = this._elements.getNodeById(link.targetNodeId);
+    const edge = edgeType === "to" ? target : source;
     if (source.x === target.x) {
-      return (edgeType === "to" ? target : source).style.height / 2;
+      if (edge.style.shape === "circle") {
+        return edge.style.ry;
+      } else {
+        return edge.style.height / 2;
+      }
     }
     if (source.y === target.y) {
-      return (edgeType === "to" ? target : source).style.width / 2;
+      if (edge.style.shape === "circle") {
+        return edge.style.rx;
+      } else {
+        return edge.style.width / 2;
+      }
     }
     if (this.decideCurveType(link) === "stepBefore") {
-      return (edgeType === "to" ? target : source).style.width / 2;
+      if (edge.style.shape === "circle") {
+        return edge.style.rx;
+      } else {
+        return edge.style.width / 2;
+      }
     } else {
-      return (edgeType === "to" ? target : source).style.height / 2;
+      if (edge.style.shape === "circle") {
+        return edge.style.ry;
+      } else {
+        return edge.style.height / 2;
+      }
     }
   }
 

@@ -11,6 +11,8 @@ export class FlowchartyNodeFactory {
       shape?: "circle"|"rect",
       width?: number,
       height?: number,
+      rx?: number,
+      ry?: number,
       strokeWidth?: number,
       strokeColor?: string,
       fillColor?: string
@@ -32,6 +34,8 @@ export class FlowchartyNodeFactory {
     shape?: "circle"|"rect",
     width?: number,
     height?: number,
+    rx?: number,
+    ry?: number,
     strokeWidth?: number,
     strokeColor?: string,
     fillColor?: string
@@ -42,6 +46,8 @@ export class FlowchartyNodeFactory {
         nodeStyle.shape !== undefined ? nodeStyle.shape : this._settings.shape,
         nodeStyle.width !== undefined ? nodeStyle.width : this._settings.nodeWidth,
         nodeStyle.height !== undefined ? nodeStyle.height : this._settings.nodeHeight,
+        nodeStyle.rx !== undefined ? nodeStyle.rx : this._settings.nodeRX,
+        nodeStyle.ry !== undefined ? nodeStyle.ry : this._settings.nodeRY,
         nodeStyle.strokeColor !== undefined ? nodeStyle.strokeColor : this._settings.nodeStrokeColor,
         nodeStyle.strokeWidth !== undefined ? nodeStyle.strokeWidth : this._settings.nodeStrokeWidth,
         nodeStyle.fillColor !== undefined ? nodeStyle.fillColor : this._settings.nodeFillColor
@@ -51,6 +57,8 @@ export class FlowchartyNodeFactory {
         this._settings.shape,
         this._settings.nodeWidth,
         this._settings.nodeHeight,
+        this._settings.nodeRX,
+        this._settings.nodeRY,
         this._settings.nodeStrokeColor,
         this._settings.nodeStrokeWidth,
         this._settings.nodeFillColor

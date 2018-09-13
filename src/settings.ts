@@ -5,6 +5,8 @@ export class FlowchartySettings {
       shape: "circle"|"rect"|"nothing",
       width: number,
       height: number,
+      rx: number,
+      ry: number,
       strokeColor: string,
       strokeWidth: number,
       fillColor: string
@@ -20,8 +22,10 @@ export class FlowchartySettings {
   } = {
     style: {
      shape: "circle",
-      width: 10,
-      height: 10,
+      width: 20,
+      height: 20,
+      rx: 5,
+      ry: 5,
       strokeColor: "#000",
       strokeWidth: 2,
       fillColor: "#fff"
@@ -92,6 +96,22 @@ export class FlowchartySettings {
 
   set nodeHeight(value: number) {
     this._node.style.height = value;
+  }
+
+  get nodeRX(): number {
+    return this._node.style.rx;
+  }
+
+  set nodeRX(value: number) {
+    this._node.style.rx = value;
+  }
+
+  get nodeRY(): number {
+    return this._node.style.ry;
+  }
+
+  set nodeRY(value: number) {
+    this._node.style.ry = value;
   }
 
   /**
