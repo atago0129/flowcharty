@@ -152,7 +152,7 @@ export class FlowchartyCanvas {
         const source = this._elements.getNodeById(d.sourceNodeId);
         const target = this._elements.getNodeById(d.targetNodeId);
         const curveType = this.decideCurveType(d);
-        if (source.x === target.x || curveType === "stepAfter") {
+        if (source.x === target.x || curveType === "stepBefore") {
           return -10;
         }
         return 20;
@@ -162,7 +162,7 @@ export class FlowchartyCanvas {
         const source = this._elements.getNodeById(d.sourceNodeId);
         const target = this._elements.getNodeById(d.targetNodeId);
         const curveType = this.decideCurveType(d);
-        if (source.x === target.x || curveType === "stepAfter") {
+        if (source.x === target.x || curveType === "stepBefore") {
           return 20;
         }
         return -10;
@@ -171,7 +171,7 @@ export class FlowchartyCanvas {
         const source = this._elements.getNodeById(d.sourceNodeId);
         const target = this._elements.getNodeById(d.targetNodeId);
         const curveType = this.decideCurveType(d);
-        if (source.x === target.x || curveType === "stepAfter") {
+        if (source.x === target.x || curveType === "stepBefore") {
           return "end";
         }
         return "start";
@@ -199,31 +199,34 @@ export class FlowchartyCanvas {
     const target: FlowchartyNode = this._elements.getNodeById(link.targetNodeId);
     const edge = edgeType === "to" ? target : source;
     if (source.x === target.x) {
-      if (edge.style.shape === "circle") {
-        return edge.style.ry;
-      } else {
-        return edge.style.height / 2;
-      }
+      this.getNodeHalfHeight(edge);
     }
     if (source.y === target.y) {
-      if (edge.style.shape === "circle") {
-        return edge.style.rx;
-      } else {
-        return edge.style.width / 2;
-      }
+      return this.getNodeHalfWidth(edge);
     }
-    if (this.decideCurveType(link) === "stepAfter" && edgeType === "from") {
-      if (edge.style.shape === "circle") {
-        return edge.style.rx;
-      } else {
-        return edge.style.width / 2;
-      }
+    if (edgeType === "to") {
+      // TODO: implements
+    }
+    if (this.decideCurveType(link) === "stepBefore") {
+      return this.getNodeHalfWidth(edge);
     } else {
-      if (edge.style.shape === "circle") {
-        return edge.style.ry;
-      } else {
-        return edge.style.height / 2;
-      }
+      return this.getNodeHalfHeight(edge);
+    }
+  }
+
+  private getNodeHalfWidth(node: FlowchartyNode): number {
+    if (node.style.shape === "circle") {
+      return node.style.rx;
+    } else {
+      return node.style.width / 2;
+    }
+  }
+
+  private getNodeHalfHeight(node: FlowchartyNode): number {
+    if (node.style.shape === "circle") {
+      return node.style.ry;
+    } else {
+      return node.style.height / 2;
     }
   }
 
