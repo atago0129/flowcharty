@@ -199,18 +199,23 @@ export class FlowchartyCanvas {
     const target: FlowchartyNode = this._elements.getNodeById(link.targetNodeId);
     const edge = edgeType === "to" ? target : source;
     if (source.x === target.x) {
-      this.getNodeHalfHeight(edge);
+      return this.getNodeHalfHeight(edge);
     }
     if (source.y === target.y) {
       return this.getNodeHalfWidth(edge);
     }
-    if (edgeType === "to") {
-      // TODO: implements
-    }
     if (this.decideCurveType(link) === "stepBefore") {
-      return this.getNodeHalfWidth(edge);
+      if (edgeType === "to") {
+        return this.getNodeHalfHeight(edge);
+      } else {
+        return this.getNodeHalfWidth(edge);
+      }
     } else {
-      return this.getNodeHalfHeight(edge);
+      if (edgeType === "to") {
+        return this.getNodeHalfWidth(edge);
+      } else {
+        return this.getNodeHalfHeight(edge);
+      }
     }
   }
 
