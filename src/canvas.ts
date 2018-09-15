@@ -1,8 +1,7 @@
-import {FlowchartyElements} from "./elements";
-
 import * as d3 from "d3";
 import {FlowchartyNode} from "./node";
 import {FlowchartyLink} from "./link";
+import {FlowchartyElements} from "./elements";
 
 export class FlowchartyCanvas {
 
@@ -31,7 +30,7 @@ export class FlowchartyCanvas {
     if (this._g !== undefined) {
       this._g.remove();
     }
-    this._g = this._svg.append("g");
+    this._g = this._svg.append("g").classed("flowchartyCanvas", true);
     this.renderNodes();
     this.renderLinks();
     d3.selectAll("._should_remove_element").remove();
@@ -131,7 +130,6 @@ export class FlowchartyCanvas {
             this.getTotalLength()
           ].join(" ");
         } else {
-          console.log(d.sourceNodeId, d.targetNodeId, _this.decideLinkMargin(d, "from"), _this.decideLinkMargin(d, "to"));
           return [
             0,
             _this.decideLinkMargin(d, "from") + _this._elements.getNodeById(d.sourceNodeId).style.strokeWidth / 2,
@@ -178,6 +176,11 @@ export class FlowchartyCanvas {
       });
   }
 
+  /**
+   * generate arrowhead of link, and get it's DOM id
+   * @param {FlowchartyLink} link
+   * @returns {string}
+   */
   private generateArrowhead(link: FlowchartyLink): string {
     const elementId = `arrowhead_${this._arrowheadIndex++}`;
     this._g.append("defs").append("marker")
@@ -194,44 +197,34 @@ export class FlowchartyCanvas {
     return elementId;
   }
 
+  /**
+   * calculate link margin from edge type, node position and link curve type
+   * @param {FlowchartyLink} link
+   * @param {"from" | "to"} edgeType
+   * @returns {number}
+   */
   private decideLinkMargin(link: FlowchartyLink, edgeType: "from"|"to") {
     const source: FlowchartyNode = this._elements.getNodeById(link.sourceNodeId);
     const target: FlowchartyNode = this._elements.getNodeById(link.targetNodeId);
     const edge = edgeType === "to" ? target : source;
     if (source.x === target.x) {
-      return this.getNodeHalfHeight(edge);
+      return edge.style.verticalLength / 2;
     }
     if (source.y === target.y) {
-      return this.getNodeHalfWidth(edge);
+      return edge.style.horizontalLength / 2;
     }
-    if (this.decideCurveType(link) === "stepBefore") {
+    if (this.decideCurveType(link) === "stepAfter") {
       if (edgeType === "to") {
-        return this.getNodeHalfHeight(edge);
+        return edge.style.verticalLength / 2;
       } else {
-        return this.getNodeHalfWidth(edge);
+        return edge.style.horizontalLength / 2;
       }
     } else {
       if (edgeType === "to") {
-        return this.getNodeHalfWidth(edge);
+        return edge.style.horizontalLength / 2;
       } else {
-        return this.getNodeHalfHeight(edge);
+        return edge.style.verticalLength / 2;
       }
-    }
-  }
-
-  private getNodeHalfWidth(node: FlowchartyNode): number {
-    if (node.style.shape === "circle") {
-      return node.style.rx;
-    } else {
-      return node.style.width / 2;
-    }
-  }
-
-  private getNodeHalfHeight(node: FlowchartyNode): number {
-    if (node.style.shape === "circle") {
-      return node.style.ry;
-    } else {
-      return node.style.height / 2;
     }
   }
 
@@ -254,6 +247,11 @@ export class FlowchartyCanvas {
     return link.style.curveType;
   }
 
+  /**
+   * decide link line type from curveType
+   * @param {FlowchartyLink} link
+   * @returns {function}
+   */
   private decideLineType(link: FlowchartyLink) {
     const curveType = this.decideCurveType(link);
     switch (curveType) {

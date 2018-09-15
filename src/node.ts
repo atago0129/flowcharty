@@ -96,6 +96,26 @@ export class FlowchartyNodeStyle {
   get fillColor(): string {
     return this._fillColor;
   }
+
+  get horizontalLength(): number {
+    if (this._shape === "circle") {
+      return this._rx * 2;
+    }
+    if (this._shape === "rect") {
+      return this._width;
+    }
+    return 0;
+  }
+
+  get verticalLength(): number {
+    if (this._shape === "circle") {
+      return this._ry * 2;
+    }
+    if (this._shape === "rect") {
+      return this._height;
+    }
+    return 0;
+  }
 }
 
 export class FlowchartyNodeLabel {
