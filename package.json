@@ -6,8 +6,8 @@
   "module": "./lib/esm/index.js",
   "types": "./lib/esm/index.d.ts",
   "scripts": {
-    "build": "rimraf dist/**/* && parcel build ./src/index.js -o flowcharty.js",
-    "debug": "rimraf dist/**/* && parcel ./debug/index.html"
+    "build": "rimraf lib/**/* && parcel build --no-cache ./src/flowcharty.ts -d ./lib -o flowcharty.js --global Flowcharty",
+    "debug": "rimraf dist/**/* && parcel ./debug/index.html --open"
   },
   "repository": {
     "type": "git",

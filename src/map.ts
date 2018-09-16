@@ -1,8 +1,6 @@
-import {FlowchartyNode} from "./node";
-
 export class FlowchartyMap {
 
-  constructor(private _map: (FlowchartyNode)[][]) {
+  constructor(private _map: (string)[][]) {
   }
 
   /**
@@ -23,9 +21,9 @@ export class FlowchartyMap {
 
   /**
    * get all rows
-   * @returns {FlowchartyNode[][]}
+   * @returns {string[][]}
    */
-  public getRows(): (FlowchartyNode)[][] {
+  public getRows(): (string)[][] {
     return this._map;
   }
 

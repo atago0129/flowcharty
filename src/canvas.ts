@@ -1,9 +1,7 @@
-import {FlowchartyElements} from "./elements";
-import {FlowchartySettings} from "./settings";
-
 import * as d3 from "d3";
 import {FlowchartyNode} from "./node";
 import {FlowchartyLink} from "./link";
+import {FlowchartyElements} from "./elements";
 
 export class FlowchartyCanvas {
 
@@ -13,89 +11,76 @@ export class FlowchartyCanvas {
 
   private _heightInterval: number = 0;
 
+  private _arrowheadIndex: number = 0;
+
   /**
    * @param {d3.Selection} _svg
-   * @param {FlowchartySettings} _settings
+   * @param {FlowchartyElements} _elements
    */
-  constructor(private _svg: d3.Selection<d3.BaseType, any, d3.BaseType, any>, private _settings: FlowchartySettings) {
+  constructor(
+    private _svg: d3.Selection<d3.BaseType, any, d3.BaseType, any>,
+    private _elements: FlowchartyElements,
+    ) {
   }
 
   /**
    * render flowchart
-   * @param {FlowchartyElements} elements
    */
-  public render(elements: FlowchartyElements) {
+  public render() {
     if (this._g !== undefined) {
       this._g.remove();
     }
-    this._g = this._svg.append("g");
-    this.init();
-    this.renderNodes(elements);
-    this.renderLinks(elements);
+    this._g = this._svg.append("g").classed("flowchartyCanvas", true);
+    this.renderNodes();
+    this.renderLinks();
     d3.selectAll("._should_remove_element").remove();
   }
 
   /**
-   * initialize
-   *  - init arrowhead
-   */
-  private init() {
-    // init arrowhead
-    this._g.append("defs").append("marker")
-      .attr("id", "arrowhead")
-      .attr("refX", this._settings.arrowheadSize + this._settings.circleNodeStrokeWidth + this._settings.circleNodeRadius)
-      .attr("refY", this._settings.arrowheadSize / 2)
-      .attr("markerWidth", this._settings.arrowheadSize)
-      .attr("markerHeight", this._settings.arrowheadSize)
-      .attr("orient", "auto")
-      .append("path")
-      .attr("d", ["M", "0,0", "V", this._settings.arrowheadSize, "L", [this._settings.arrowheadSize, this._settings.arrowheadSize /2].join(","), "Z"].join(" "))
-      .attr("fill", "#000");
-    this._g.append("defs").append("marker")
-      .attr("id", "arrowhead_for_marge")
-      .attr("refX", this._settings.arrowheadSize)
-      .attr("refY", this._settings.arrowheadSize / 2)
-      .attr("markerWidth", this._settings.arrowheadSize)
-      .attr("markerHeight", this._settings.arrowheadSize)
-      .attr("orient", "auto")
-      .append("path")
-      .attr("d", ["M", "0,0", "V", this._settings.arrowheadSize, "L", [this._settings.arrowheadSize, this._settings.arrowheadSize /2].join(","), "Z"].join(" "))
-      .attr("fill", "#000");
-  }
-
-  /**
    * render nodes by map
-   * @param {FlowchartyElements} elements
    */
-  private renderNodes(elements: FlowchartyElements) {
+  private renderNodes() {
     const _this = this;
-    this._widthInterval = Number(this._svg.attr("width")) / elements.map.getColumnCount();
-    this._heightInterval = Number(this._svg.attr("height")) / elements.map.getRowCount();
-    elements.map.getRows().map((row, rowIndex) => {
+    this._widthInterval = Number(this._svg.attr("width")) / this._elements.map.getColumnCount();
+    this._heightInterval = Number(this._svg.attr("height")) / this._elements.map.getRowCount();
+    this._elements.map.getRows().map((row, rowIndex) => {
       const node = this._g.selectAll(".node").data(row);
       const enter = node.enter()
         .append("svg")
         .style("overflow", "visible")
         .attr("x", (d, i) => {
           if (d === null) return 0;
-          d.x = this._widthInterval / 2 + this._widthInterval * i;
-          return d.x;
+          this._elements.getNodeById(d).x = this._widthInterval / 2 + this._widthInterval * i;
+          return this._elements.getNodeById(d).x;
         })
-        .attr("y", (d) => {
+        .attr("y", d => {
           if (d === null) return 0;
-          d.y = this._heightInterval / 2 + this._heightInterval * rowIndex;
-          return d.y;
+          this._elements.getNodeById(d).y = this._heightInterval / 2 + this._heightInterval * rowIndex;
+          return this._elements.getNodeById(d).y;
         })
         .attr("width", "100%")
         .attr("height", "100%")
-        .attr("class", (d) => (d.id === "" ? "_should_remove_element" : ""));
-      enter.append("circle")
-        .attr("r", this._settings.circleNodeRadius)
-        .attr("fill", this._settings.circleNodeFill)
-        .attr("stroke", this._settings.circleNodeStroke)
-        .attr("stroke-width", this._settings.circleNodeStrokeWidth);
+        .attr("class", d => this._elements.getNodeById(d).id === "" ? "_should_remove_element" : "");
+      enter.append("ellipse")
+        .attr("class", d => this._elements.getNodeById(d).style.shape !== "circle" ? "_should_remove_element" : "")
+        .attr("rx", d => this._elements.getNodeById(d).style.rx)
+        .attr("ry", d => this._elements.getNodeById(d).style.ry)
+        .attr("fill", d => this._elements.getNodeById(d).style.fillColor)
+        .attr("stroke", d => this._elements.getNodeById(d).style.strokeColor)
+        .attr("stroke-width", d => this._elements.getNodeById(d).style.strokeWidth);
+      enter.append("rect")
+        .attr("class", d => (this._elements.getNodeById(d).style.shape !== "rect" ? "_should_remove_element" : ""))
+        .attr("width", d => this._elements.getNodeById(d).style.width)
+        .attr("height", d => this._elements.getNodeById(d).style.height)
+        .attr("rx", d => this._elements.getNodeById(d).style.rx)
+        .attr("ry", d => this._elements.getNodeById(d).style.ry)
+        .attr("x", d => - (this._elements.getNodeById(d).style.width / 2))
+        .attr("y", d => - (this._elements.getNodeById(d).style.height / 2))
+        .attr("fill", d => this._elements.getNodeById(d).style.fillColor)
+        .attr("stroke", d => this._elements.getNodeById(d).style.strokeColor)
+        .attr("stroke-width", d => this._elements.getNodeById(d).style.strokeWidth);
       enter.html(function (d) {
-        return d3.select(this).html() + _this.getTextElementsWithLineBreak(d);
+        return d3.select(this).html() + _this.getTextElementsWithLineBreak(_this._elements.getNodeById(d));
       });
     })
   }
@@ -107,89 +92,180 @@ export class FlowchartyCanvas {
    */
   private getTextElementsWithLineBreak(node: FlowchartyNode): string {
     let html = "";
-    const textArray = node.name.split(/\n/);
+    const textArray = node.label.name.split(/\n/);
     textArray.reverse().forEach((t, i) => {
-      html += `<text dx="${node.nameLabelPosition.dx}" dy="${node.nameLabelPosition.dy}" text-anchor="${node.nameLabelPosition.textAnchor}" y="-${i}em">${t}</text>`;
+      html += `<text fill="${node.label.color}" dx="${node.label.dx}" dy="${node.label.dy}" text-anchor="${node.label.textAnchor}" dominant-baseline="central" y="-${i}em">${t}</text>`;
     });
     return html;
   }
 
   /**
    * render link path by map & links
-   * @param {FlowchartyElements} elements
    */
-  private renderLinks(elements: FlowchartyElements) {
+  private renderLinks() {
     const _this = this;
-    const link = this._g.selectAll(".link").data(elements.links).attr("class", "link");
+    const link = this._g.selectAll(".link").data(this._elements.links).attr("class", "link");
     const enter = link.enter().append("g");
 
     enter.append("path")
       .style("fill", "none")
-      .style("stroke", this._settings.linkStroke)
-      .attr("marker-end", (d) => {
-        if (d.linkType === "marge") {
-          return "url(#arrowhead_for_marge)";
-        } else {
-          return "url(#arrowhead)";
-        }
-      })
-      .attr("d", (d) => {
-        const margin = d.linkType === "marge" ? this._heightInterval / 5 : 0;
+      .style("stroke", d => d.style.color)
+      .style("stroke-width", d => d.style.strokeWidth)
+      .attr("marker-end", d => d.style.headType === "arrow" ? `url(#${this.generateArrowhead(d)})` : "")
+      .attr("d", d => {
+        const margin = d.style.connectionType === "marge" ? this._heightInterval / 5 : 0;
         const lineData = [
-          {x: d.sourceNode.x, y: d.sourceNode.y},
-          {x: d.targetNode.x, y: d.targetNode.y - margin},
+          {x: this._elements.getNodeById(d.sourceNodeId).x, y: this._elements.getNodeById(d.sourceNodeId).y},
+          {x: this._elements.getNodeById(d.targetNodeId).x, y: this._elements.getNodeById(d.targetNodeId).y - margin},
         ];
         return _this.decideLineType(d)(lineData);
       })
       .attr("stroke-dasharray", function(d) {
         if (!(this instanceof SVGPathElement)) return "";
-        if (d.linkType === "marge") {
-          return [0, _this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth, this.getTotalLength()].join(" ");
+        if (d.style.connectionType === "marge") {
+          return [
+            0,
+            _this.decideLinkMargin(d, "from") + _this._elements.getNodeById(d.sourceNodeId).style.strokeWidth / 2,
+            this.getTotalLength() - ((d.style.headType === "arrow" ? d.style.arrowHeadSize : 0) + _this._elements.getNodeById(d.sourceNodeId).style.strokeWidth / 2),
+            this.getTotalLength()
+          ].join(" ");
         } else {
-          return [0, _this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth, this.getTotalLength() - (_this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth + _this._settings.arrowheadSize)].join(" ");
+          return [
+            0,
+            _this.decideLinkMargin(d, "from") + _this._elements.getNodeById(d.sourceNodeId).style.strokeWidth / 2,
+            this.getTotalLength() - (_this.decideLinkMargin(d, "from") + _this.decideLinkMargin(d, "to") + (d.style.headType === "arrow" ? d.style.arrowHeadSize : 0) + _this._elements.getNodeById(d.sourceNodeId).style.strokeWidth / 2),
+            this.getTotalLength()
+          ].join(" ");
         }
       })
       .attr("stroke-dashoffset", 0);
     enter.append("text")
-      .attr("class", (d) => (d.label.name === "" ? "_should_remove_element" : ""))
-      .text((d) => (d.label.name))
-      .attr("x", (d) => {
-        if (d.sourceNode.x === d.targetNode.x) {
-          return d.sourceNode.x - (_this._settings.circleNodeRadius * 2.5 + _this._settings.circleNodeStrokeWidth);
-        } else {
-          return d.sourceNode.x + (_this._settings.circleNodeRadius * 4 + _this._settings.circleNodeStrokeWidth);
+      .attr("class", d => (d.label.name === "" ? "_should_remove_element" : ""))
+      .text(d => d.label.name)
+      .style("fill", d => d.label.color)
+      .attr("x", d => this._elements.getNodeById(d.sourceNodeId).x)
+      .attr("y", d => this._elements.getNodeById(d.sourceNodeId).y)
+      .attr("dx", d => {
+        if (d.label.dx) return d.label.dx;
+        const source = this._elements.getNodeById(d.sourceNodeId);
+        const target = this._elements.getNodeById(d.targetNodeId);
+        const curveType = this.decideCurveType(d);
+        if (source.x === target.x || curveType === "stepBefore") {
+          return -10;
         }
+        return 20;
       })
-      .attr("y", (d) => {
-        if (d.sourceNode.x === d.targetNode.x) {
-          return d.sourceNode.y + (_this._settings.circleNodeRadius * 5 + _this._settings.circleNodeStrokeWidth);
-        } else {
-          return d.sourceNode.y - (_this._settings.circleNodeRadius + _this._settings.circleNodeStrokeWidth);
+      .attr("dy", d => {
+        if (d.label.dy) return d.label.dy;
+        const source = this._elements.getNodeById(d.sourceNodeId);
+        const target = this._elements.getNodeById(d.targetNodeId);
+        const curveType = this.decideCurveType(d);
+        if (source.x === target.x || curveType === "stepBefore") {
+          return 20;
         }
+        return -10;
       })
-      .attr("text-anchor", (d) => (d.sourceNode.x === d.targetNode.x ? "end" : "start"));
+      .attr("text-anchor", d => {
+        const source = this._elements.getNodeById(d.sourceNodeId);
+        const target = this._elements.getNodeById(d.targetNodeId);
+        const curveType = this.decideCurveType(d);
+        if (source.x === target.x || curveType === "stepBefore") {
+          return "end";
+        }
+        return "start";
+      });
+  }
+
+  /**
+   * generate arrowhead of link, and get it's DOM id
+   * @param {FlowchartyLink} link
+   * @returns {string}
+   */
+  private generateArrowhead(link: FlowchartyLink): string {
+    const elementId = `arrowhead_${this._arrowheadIndex++}`;
+    this._g.append("defs").append("marker")
+      .attr("id", elementId)
+      .attr("refX", (link.style.connectionType === "direct" ? this.decideLinkMargin(link, "to") : 0) / link.style.strokeWidth + link.style.arrowHeadSize)
+      .attr("refY", link.style.arrowHeadSize / 2)
+      .attr("markerUnits", "strokeWidth")
+      .attr("markerWidth", link.style.arrowHeadSize)
+      .attr("markerHeight", link.style.arrowHeadSize)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("d", ["M", "0,0", "V", link.style.arrowHeadSize, "L", [link.style.arrowHeadSize, link.style.arrowHeadSize / 2].join(","), "Z"].join(" "))
+      .attr("fill", link.style.color);
+    return elementId;
+  }
+
+  /**
+   * calculate link margin from edge type, node position and link curve type
+   * @param {FlowchartyLink} link
+   * @param {"from" | "to"} edgeType
+   * @returns {number}
+   */
+  private decideLinkMargin(link: FlowchartyLink, edgeType: "from"|"to") {
+    const source: FlowchartyNode = this._elements.getNodeById(link.sourceNodeId);
+    const target: FlowchartyNode = this._elements.getNodeById(link.targetNodeId);
+    const edge = edgeType === "to" ? target : source;
+    if (source.x === target.x) {
+      return edge.style.verticalLength / 2;
+    }
+    if (source.y === target.y) {
+      return edge.style.horizontalLength / 2;
+    }
+    if (this.decideCurveType(link) === "stepAfter") {
+      if (edgeType === "to") {
+        return edge.style.verticalLength / 2;
+      } else {
+        return edge.style.horizontalLength / 2;
+      }
+    } else {
+      if (edgeType === "to") {
+        return edge.style.horizontalLength / 2;
+      } else {
+        return edge.style.verticalLength / 2;
+      }
+    }
   }
 
   /**
    * @param link
-   * @returns function
+   * @returns "strait"|"stepBefore"|"stepAfter"
+   */
+  private decideCurveType(link: FlowchartyLink): "strait"|"stepBefore"|"stepAfter" {
+    const source: FlowchartyNode = this._elements.getNodeById(link.sourceNodeId);
+    const target: FlowchartyNode = this._elements.getNodeById(link.targetNodeId);
+    if (link.style.curveType === "default") {
+      if (source.x === target.x || source.y === target.y) {
+        return "strait";
+      } else if (source.x > target.x) {
+        return "stepBefore";
+      } else {
+        return "stepAfter";
+      }
+    }
+    return link.style.curveType;
+  }
+
+  /**
+   * decide link line type from curveType
+   * @param {FlowchartyLink} link
+   * @returns {function}
    */
   private decideLineType(link: FlowchartyLink) {
-    if (link.lineType === "stepBefore") {
-      return this.lineStepBefore;
-    } else if(link.lineType === "stepAfter") {
-      return this.lineStepAfter;
-    }
-    if (link.sourceNode.x === link.targetNode.x || link.sourceNode.y === link.targetNode.y) {
-        return this.line;
-    } else if (link.sourceNode.x > link.targetNode.x) {
+    const curveType = this.decideCurveType(link);
+    switch (curveType) {
+      case "stepBefore":
         return this.lineStepBefore;
-    } else {
+      case "stepAfter":
         return this.lineStepAfter;
+      case "strait":
+      default:
+        return this.lineStrait;
     }
   }
 
-  private line: d3.Line<{x: number, y:number}> = d3.line<{x: number, y:number}>()
+  private lineStrait: d3.Line<{x: number, y:number}> = d3.line<{x: number, y:number}>()
     .x((d: {x: number, y:number}) => (d.x))
     .y((d: {x: number, y:number}) => (d.y));
 

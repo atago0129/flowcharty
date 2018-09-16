@@ -1,63 +1,22 @@
 import {FlowchartyMap} from "./map";
 import {FlowchartyLink} from "./link";
-import {FlowchartyNode} from "./node";
+import {FlowchartyNode, FlowchartyNodeLabel, FlowchartyNodeStyle} from "./node";
 
 export class FlowchartyElements {
 
   private readonly _dummyNode: FlowchartyNode;
 
-  private readonly _nodes: FlowchartyNode[];
-
-  private readonly _links: FlowchartyLink[];
-
   /**
-   * map parse by multi-dimensional array data
-   * ex.)
-   *  - data
-   *    [
-   *      ['A', 'B', 'C'],
-   *      ['D', '', 'F'],
-   *      ['G']
-   *    ]
-   *
-   *  =>
-   *    [
-   *      [A-node, B-node, C-node],
-   *      [D-node, DummyNode, F-node],
-   *      [G-node, DummyNode, DummyNode]
-   *    ]
+   * @param {FlowchartyNode[]} _nodes
+   * @param {FlowchartyLink[]} _links
+   * @param {FlowchartyMap} _map
    */
-  private readonly _map: FlowchartyMap;
-
-  /**
-   * @param {object} data
-   */
-  constructor(data: {
-    nodes: {id: string, label: {name: string, dx?: number, dy?: number, textAnchor?: "start"|"middle"|"end"}}[],
-    map: string[][],
-    links: {source: string, target: string, label?: {name: string, positionType?: string}, linkType?: "direct"|"marge", lineType?: "default"|"stepBefore"|"stepAfter"}[]
-  }) {
-    this._dummyNode = new FlowchartyNode("", "");
-    this._nodes = data.nodes.map((nodeData) => (
-      new FlowchartyNode(
-        nodeData.id,
-        nodeData.label.name,
-        nodeData.label.dx,
-        nodeData.label.dy,
-        nodeData.label.textAnchor
-      )
-    ));
-    this._map = new FlowchartyMap(data.map.map((nodeIds) => (nodeIds.map((nodeId) => (this.getNodeById(nodeId))))));
-    this._links = data.links.map((link) => {
-      return new FlowchartyLink(
-        this.getNodeById(link.source),
-        this.getNodeById(link.target),
-        link.label,
-        link.linkType,
-        link.lineType
-      );
-    })
+  constructor(private _nodes: FlowchartyNode[], private _links: FlowchartyLink[], private _map: FlowchartyMap) {
+    const dummyStyle: FlowchartyNodeStyle = new FlowchartyNodeStyle("nothing", 0, 0, 0, 0, "#000", 0, "#000");
+    const dummyLabel: FlowchartyNodeLabel = new FlowchartyNodeLabel("", 0, 0, "start", "#000", "0", "");
+    this._dummyNode = new FlowchartyNode("", dummyStyle, dummyLabel);
   }
+
 
   /**
    * get all nodes
@@ -89,7 +48,7 @@ export class FlowchartyElements {
    * @param {string} id
    * @returns {FlowchartyNode}
    */
-  private getNodeById(id: string): FlowchartyNode {
+  public getNodeById(id: string): FlowchartyNode {
     return this._nodes.filter((node) => (node.id === id)).pop() || this._dummyNode ;
   }
 
