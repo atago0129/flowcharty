@@ -94,7 +94,7 @@ export class FlowchartyCanvas {
     let html = "";
     const textArray = node.label.name.split(/\n/);
     textArray.reverse().forEach((t, i) => {
-      html += `<text fill="${node.label.color}" dx="${node.label.dx}" dy="${node.label.dy}" text-anchor="${node.label.textAnchor}" dominant-baseline="central" y="-${i}em">${t}</text>`;
+      html += `<text font-size="${node.label.fontSize}" fill="${node.label.color}" dx="${node.label.dx}" dy="${node.label.dy}" text-anchor="${node.label.textAnchor}" dominant-baseline="central" y="-${i}em">${t}</text>`;
     });
     return html;
   }
@@ -143,6 +143,7 @@ export class FlowchartyCanvas {
       .attr("class", d => (d.label.name === "" ? "_should_remove_element" : ""))
       .text(d => d.label.name)
       .style("fill", d => d.label.color)
+      .attr("font-size", d => d.label.fontSize)
       .attr("x", d => this._elements.getNodeById(d.sourceNodeId).x)
       .attr("y", d => this._elements.getNodeById(d.sourceNodeId).y)
       .attr("dx", d => {
