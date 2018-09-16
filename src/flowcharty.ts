@@ -82,52 +82,219 @@ export default class Flowcharty {
     canvas.render();
   }
 
-  // /**
-  //  * set default stroke color of circle node
-  //  * @param {string} value
-  //  */
-  // public set circleNodeStroke(value: string) {
-  //   this._settings.nodeStrokeColor = value;
-  // }
-  //
-  // /**
-  //  * set default stroke width of circle node
-  //  * @param {number} value
-  //  */
-  // public set circleNodeStrokeWidth(value: number) {
-  //   this._settings.nodeStrokeWidth = value;
-  // }
-  //
-  // /**
-  //  * set default radius of circle node
-  //  * @param {number} value
-  //  */
-  // public set circleNodeRadius(value: number) {
-  //   this._settings.circleNodeRadius = value;
-  // }
-  //
-  // /**
-  //  * set default fill color of circle node
-  //  * @param {string} value
-  //  */
-  // public set circleNodeFill(value: string) {
-  //   this._settings.nodeFillColor = value;
-  // }
-  //
-  // /**
-  //  * set default size of arrowhead
-  //  * @param {number} value
-  //  */
-  // public set arrowheadSize(value: number) {
-  //   this._settings.arrowheadSize = value;
-  // }
-  //
-  // /**
-  //  * set default stroke color of link
-  //  * @param {string} value
-  //  */
-  // public set linkStroke(value: string) {
-  //   this._settings.linkStroke = value;
-  // }
+  /**
+   * set default node shape
+   * @param {"circle" | "rect" | "nothing"} value
+   */
+  set shape(value: "circle"|"rect"|"nothing") {
+    this._settings.shape = value;
+  }
+
+  /**
+   * set default rectangle node width
+   * @param {number} value
+   */
+  set nodeWidth(value: number) {
+    this._settings.nodeWidth = value;
+  }
+
+  /**
+   * set default rectangle node height
+   * @param {number} value
+   */
+  set nodeHeight(value: number) {
+    this._settings.nodeHeight = value;
+  }
+
+  /**
+   * set default horizontal radius of circle(ellipse) node
+   * or, set default  horizontal radius of rounded rect node's corner
+   * @param {number} value
+   */
+  set nodeRX(value: number) {
+    this._settings.nodeRX = value;
+  }
+
+  /**
+   * set default vertical radius of circle(ellipse) node
+   * or, set default vertical radius of rounded rect node's corner
+   * @param {number} value
+   */
+  set nodeRY(value: number) {
+    this._settings.nodeRY = value;
+  }
+
+  /**
+   * set default stroke color of circle node
+   * @param {string} value
+   */
+  set nodeStrokeColor(value: string) {
+    this._settings.nodeStrokeColor = value;
+  }
+
+  /**
+   * set default stroke width of circle node
+   * @param {number} value
+   */
+  set nodeStrokeWidth(value: number) {
+    this._settings.nodeStrokeWidth = value;
+  }
+
+  /**
+   * set default fill color of circle node
+   * @param {string} value
+   */
+  set nodeFillColor(value: string) {
+    this._settings.nodeFillColor = value;
+  }
+
+  /**
+   * set default shift of node label along the x-axis on the position
+   * - the center of the node as (0, 0)
+   * @param {number} value
+   */
+  set nodeLabelDX(value: number) {
+    this._settings.nodeLabelDX = value;
+  }
+
+  /**
+   * set default shift of node label along the y-axis on the position
+   * - the center of the node as (0, 0)
+   * @param {number} value
+   */
+  set nodeLabelDY(value: number) {
+    this._settings.nodeLabelDY = value;
+  }
+
+  /**
+   * set default text anchor of node name
+   * @param {"start" | "middle" | "end"} value
+   */
+  set nodeLabelTextAnchor(value: "start" | "middle" | "end") {
+    this._settings.nodeLabelTextAnchor = value;
+  }
+
+  /**
+   * set default text color of node name
+   * @param {string} value
+   */
+  set nodeLabelColor(value: string) {
+    this._settings.nodeLabelColor = value;
+  }
+
+  /**
+   * set default font size of node name
+   * @param {string} value
+   */
+  set nodeLabelFontSize(value: string) {
+    this._settings.nodeLabelFontSize = value;
+  }
+
+  /**
+   * set default font family of node name
+   * @param {string} value
+   */
+  set nodeLabelFontFamily(value: string) {
+    this._settings.nodeLabelFontFamily = value;
+  }
+
+  /**
+   * set default connection type of link path
+   * - direct: link connect to node directly
+   * - marge: link connect to a little above the node
+   * @param {"direct" | "marge"} value
+   */
+  set linkConnectionType(value: "direct"|"marge") {
+    this._settings.linkConnectionType = value;
+  }
+
+  /**
+   * set default link curve type
+   * - default: unspecified (it's is calculated by `source node` position and `target node` position on rendering)
+   * - stepBefore: becomes stepBefore forcibly irrespective of position
+   * - stepAfter: becomes stepAfter forcibly irrespective of position
+   * @see https://bl.ocks.org/emmasaunders/f7178ed715a601c5b2c458a2c7093f78
+   * @param {"default" | "stepBefore" | "stepAfter"} value
+   */
+  set linkCurveType(value: "default"|"stepBefore"|"stepAfter") {
+    this._settings.linkCurveType = value;
+  }
+
+  /**
+   * set default link color
+   * @param {string} value
+   */
+  set linkColor(value: string) {
+    this._settings.linkColor = value;
+  }
+
+  /**
+   * set default link stroke width
+   * @param {number} value
+   */
+  set linkWidth(value: number) {
+    this._settings.linkWidth = value;
+  }
+
+  /**
+   * set default link head type
+   * - arrow: render arrowhead on link tip
+   * - none: render nothing on link tip
+   * @param {"arrow" | "none"} value
+   */
+  set linkHeadType(value: "arrow"|"none") {
+    this._settings.linkHeadType = value;
+  }
+
+  /**
+   * get default arrowhead size
+   * - valid when headType is `arrow`
+   * @param {number} value
+   */
+  set linkArrowheadSize(value: number) {
+    this._settings.linkArrowheadSize = value;
+  }
+
+  /**
+   * set default shift of link along the x-axis on the position
+   * - the center of the link `source node` as (0, 0)
+   * @param {number | undefined} value
+   */
+  set linkLabelDX(value: number|undefined) {
+    this._settings.linkLabelDX = value;
+  }
+
+  /**
+   * set default shift of link along the y-axis on the position
+   * - the center of the link `source node` as (0, 0)
+   * @param {number | undefined} value
+   */
+  set linkLabelDY(value: number|undefined) {
+    this._settings.linkLabelDY = value;
+  }
+
+  /**
+   * set default color of link label
+   * @param {string} value
+   */
+  set linkLabelColor(value: string) {
+    this._settings.linkLabelColor = value;
+  }
+
+  /**
+   * set default font size of link label
+   * @param {string} value
+   */
+  set linkLabelFontSize(value: string) {
+    this._settings.linkLabelFontSize = value;
+  }
+
+  /**
+   * set default font family of link label
+   * @param {string} value
+   */
+  set linkLabelFontFamily(value: string) {
+    this._settings.linkLabelFontFamily = value;
+  }
 
 }

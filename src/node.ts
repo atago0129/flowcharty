@@ -12,10 +12,18 @@ export class FlowchartyNode {
     return this._id;
   }
 
+  /**
+   * get node style
+   * @returns {FlowchartyNodeStyle}
+   */
   get style(): FlowchartyNodeStyle {
     return this._style;
   }
 
+  /**
+   * get node label
+   * @returns {FlowchartyNodeLabel}
+   */
   get label(): FlowchartyNodeLabel {
     return this._label;
   }
@@ -65,38 +73,79 @@ export class FlowchartyNodeStyle {
     private _fillColor: string){
   }
 
+  /**
+   * get shape type
+   * @returns {"circle" | "rect" | "nothing"}
+   */
   get shape(): "circle"|"rect"|"nothing" {
     return this._shape;
   }
 
+  /**
+   * get width of rect node
+   * @returns {number}
+   */
   get width(): number {
     return this._width;
   }
 
+  /**
+   * get height of rect node
+   * @returns {number}
+   */
   get height(): number {
     return this._height;
   }
 
+  /**
+   * get horizontal radius of circle(ellipse) node
+   * or, get horizontal radius of rounded rect node's corner
+   * @returns {number}
+   */
   get rx(): number {
     return this._rx;
   }
 
+  /**
+   * get vertical radius of circle(ellipse) node
+   * or, get vertical radius of rounded rect node's corner
+   * @returns {number}
+   */
   get ry(): number {
     return this._ry;
   }
 
+  /**
+   * get color of stroke
+   * @returns {string}
+   */
   get strokeColor(): string {
     return this._strokeColor;
   }
 
+  /**
+   * get width of stroke
+   * @returns {number}
+   */
   get strokeWidth(): number {
     return this._strokeWidth;
   }
 
+  /**
+   * get color of fill
+   * @returns {string}
+   */
   get fillColor(): string {
     return this._fillColor;
   }
 
+  /**
+   * get horizontal length
+   * - shape is `circle`: return horizontal diameter
+   * - shape is `rect`: return width
+   * - shape is `nothing`: return 0
+   * @returns {number}
+   */
   get horizontalLength(): number {
     if (this._shape === "circle") {
       return this._rx * 2;
@@ -107,6 +156,13 @@ export class FlowchartyNodeStyle {
     return 0;
   }
 
+  /**
+   * get vertical length
+   * - shape is `circle`: return vertical diameter
+   * - shape is `rect`: return height
+   * - shape is `nothing`: return 0
+   * @returns {number}
+   */
   get verticalLength(): number {
     if (this._shape === "circle") {
       return this._ry * 2;
@@ -129,30 +185,60 @@ export class FlowchartyNodeLabel {
     private _fontFamily: string) {
   }
 
+  /**
+   * get label name text
+   * @returns {string}
+   */
   get name(): string {
     return this._name;
   }
 
+  /**
+   * get a shift along the x-axis on the position
+   * - the center of the node as (0, 0)
+   * @returns {number}
+   */
   get dx(): number {
     return this._dx;
   }
 
+  /**
+   * get a shift along the y-axis on the position
+   * - the center of the node as (0, 0)
+   * @returns {number}
+   */
   get dy(): number {
     return this._dy;
   }
 
+  /**
+   * get text anchor of name text
+   * @returns {"start" | "middle" | "end"}
+   */
   get textAnchor(): "start" | "middle" | "end" {
     return this._textAnchor;
   }
 
+  /**
+   * get text color
+   * @returns {string}
+   */
   get color(): string {
     return this._color;
   }
 
+  /**
+   * get font size
+   * @returns {string}
+   */
   get fontSize(): string {
     return this._fontSize;
   }
 
+  /**
+   * get font family
+   * @returns {string}
+   */
   get fontFamily(): string {
     return this._fontFamily;
   }

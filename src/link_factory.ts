@@ -80,8 +80,8 @@ export class FlowchartyLinkFactory {
     } else {
       label = new FlowchartyLinkLabel(
         "",
-        this._settings.linkLabelX,
-        this._settings.linkLabelY,
+        this._settings.linkLabelDX,
+        this._settings.linkLabelDY,
         this._settings.linkLabelColor,
         this._settings.linkLabelFontSize,
         this._settings.linkLabelFontFamily
