@@ -1,6 +1,6 @@
 {
   "name": "flowcharty",
-  "version": "0.0.1",
+  "version": "0.6.0",
   "description": "flowchart with d3.js",
   "main": "./lib/flowcharty.js",
   "scripts": {
