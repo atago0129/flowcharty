@@ -56,6 +56,7 @@ export default class Flowcharty {
           name?: string,
           dx?: number,
           dy?: number,
+          textAnchor?: "start"|"middle"|"end",
           color?: string,
           fontSize?: string,
           fontFamily?: string
@@ -271,6 +272,14 @@ export default class Flowcharty {
    */
   set linkLabelDY(value: number|undefined) {
     this._settings.linkLabelDY = value;
+  }
+
+  /**
+   * set default link label text-anchor type
+   * @param value
+   */
+  set linkLabelTextAnchor(value: "start"|"middle"|"end"|undefined) {
+    this._settings.linkLabelTextAnchor = value;
   }
 
   /**

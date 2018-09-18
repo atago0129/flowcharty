@@ -114,6 +114,7 @@ export class FlowchartyLinkLabel {
     private _name: string,
     private _dx: number|undefined,
     private _dy: number|undefined,
+    private _textAnchor: "start"|"middle"|"end"|undefined,
     private _color: string,
     private _fontSize: string,
     private _fontFamily: string) {
@@ -143,6 +144,13 @@ export class FlowchartyLinkLabel {
    */
   get dy(): number | undefined {
     return this._dy;
+  }
+
+  /**
+   * get link label text-anchor
+   */
+  get textAnchor(): "start"|"middle"|"end"|undefined {
+    return this._textAnchor;
   }
 
   /**

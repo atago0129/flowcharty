@@ -50,8 +50,9 @@ export class FlowchartySettings {
       arrowheadSize: number
     },
     label: {
-      x: number|undefined,
-      y: number|undefined,
+      dx: number|undefined,
+      dy: number|undefined,
+      textAnchor: "start"|"middle"|"end"|undefined,
       color: string,
       fontSize: string,
       fontFamily: string
@@ -66,8 +67,9 @@ export class FlowchartySettings {
       arrowheadSize: 6
     },
     label: {
-      x: undefined,
-      y: undefined,
+      dx: undefined,
+      dy: undefined,
+      textAnchor: undefined,
       color: "#000",
       fontSize: "12px",
       fontFamily: "メイリオ"
@@ -426,7 +428,7 @@ export class FlowchartySettings {
    * @returns {number | undefined}
    */
   get linkLabelDX(): number|undefined {
-    return this._link.label.x;
+    return this._link.label.dx;
   }
 
   /**
@@ -435,7 +437,7 @@ export class FlowchartySettings {
    * @param {number | undefined} value
    */
   set linkLabelDX(value: number|undefined) {
-    this._link.label.x = value;
+    this._link.label.dx = value;
   }
 
   /**
@@ -444,7 +446,7 @@ export class FlowchartySettings {
    * @returns {number | undefined}
    */
   get linkLabelDY(): number|undefined {
-    return this._link.label.y;
+    return this._link.label.dy;
   }
 
   /**
@@ -453,7 +455,22 @@ export class FlowchartySettings {
    * @param {number | undefined} value
    */
   set linkLabelDY(value: number|undefined) {
-    this._link.label.y = value;
+    this._link.label.dy = value;
+  }
+
+  /**
+   * get default link label text-anchor type
+   */
+  get linkLabelTextAnchor(): "start"|"middle"|"end"|undefined {
+    return this._link.label.textAnchor;
+  }
+
+  /**
+   * set default link label text-anchor type
+   * @param value
+   */
+  set linkLabelTextAnchor(value: "start"|"middle"|"end"|undefined) {
+    this._link.label.textAnchor = value;
   }
 
   /**

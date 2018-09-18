@@ -20,6 +20,7 @@ export class FlowchartyLinkFactory {
       name?: string,
       dx?: number,
       dy?: number,
+      textAnchor?: "start"|"middle"|"end"|undefined,
       color?: string,
       fontSize?: string,
       fontFamily?: string
@@ -63,6 +64,7 @@ export class FlowchartyLinkFactory {
     name?: string,
     dx?: number,
     dy?: number,
+    textAnchor?: "start"|"middle"|"end"|undefined,
     color?: string,
     fontSize?: string,
     fontFamily?: string
@@ -73,6 +75,7 @@ export class FlowchartyLinkFactory {
         linkLabel.name !== undefined ? linkLabel.name : "",
         linkLabel.dx,
         linkLabel.dy,
+        linkLabel.textAnchor,
         linkLabel.color !== undefined ? linkLabel.color : this._settings.linkLabelColor,
         linkLabel.fontSize !== undefined ? linkLabel.fontSize : this._settings.linkLabelFontSize,
         linkLabel.fontFamily !== undefined ? linkLabel.fontFamily : this._settings.linkLabelFontFamily
@@ -82,6 +85,7 @@ export class FlowchartyLinkFactory {
         "",
         this._settings.linkLabelDX,
         this._settings.linkLabelDY,
+        this._settings.linkLabelTextAnchor,
         this._settings.linkLabelColor,
         this._settings.linkLabelFontSize,
         this._settings.linkLabelFontFamily

@@ -167,6 +167,9 @@ export class FlowchartyCanvas {
         return -10;
       })
       .attr("text-anchor", d => {
+        if (d.label.textAnchor !== undefined) {
+          return d.label.textAnchor;
+        }
         const source = this._elements.getNodeById(d.sourceNodeId);
         const target = this._elements.getNodeById(d.targetNodeId);
         const curveType = this.decideCurveType(d);
