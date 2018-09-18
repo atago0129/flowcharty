@@ -36,7 +36,7 @@ export class FlowchartySettings {
       textAnchor: "end",
       color: "#000",
       fontSize: "12px",
-      fontFamily: "メイリオ"
+      fontFamily: "sans-serif"
     }
   };
   
@@ -72,7 +72,7 @@ export class FlowchartySettings {
       textAnchor: undefined,
       color: "#000",
       fontSize: "12px",
-      fontFamily: "メイリオ"
+      fontFamily: "sans-serif"
     }
   };
 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<body>
+<svg width="960" height="720"></svg>
+<script src="//d3js.org/d3.v5.min.js"></script>
+<script src="./lib/flowcharty.js"></script>
+<script>
+  var data = {
+    nodes: [
+      {id: 'start', label: {name: 'Which flowchart library\nshould you use?'}},
+      {id: 'manually', label: {name: 'You want to \ndraw manually?'}},
+      {id: 'drawIo', label: {name: 'draw.io'}},
+      {id: 'formal', label: {name: 'You want to draw \na relatively formal chart?'}},
+      {id: 'anotherChart', label: {name: 'You want to use not only for flowchart \nbut also another UML?'}},
+      {id: 'mermaid', label: {name: 'mermaid'}},
+      {id: 'flowchartJS', label: {name: 'flowchart.js'}},
+      {id: 'flowcharty', label: {name: 'flowcharty'}},
+    ],
+    map: [
+      ['start'],
+      ['manually', 'drawIo'],
+      ['formal'],
+      ['', 'anotherChart'],
+      ['flowcharty', 'flowchartJS', 'mermaid'],
+    ],
+    links: [
+      {source: 'start', target: 'manually'},
+      {source: 'manually', target: 'drawIo', label: {name: 'yes'}},
+      {source: 'manually', target: 'formal', label: {name: 'no'}},
+      {source: 'formal', target: 'anotherChart', label: {name: 'yes'}},
+      {source: 'anotherChart', target: 'flowchartJS', label: {name: 'no'}},
+      {source: 'anotherChart', target: 'mermaid', label: {name: 'yes'}},
+      {source: 'formal', target: 'flowcharty', label: {name: 'no'}}
+    ]
+  };
+
+  var flowcharty = new Flowcharty.default();
+  flowcharty.render(d3.select("svg"), data);
+</script>
+</body>
+</html>
