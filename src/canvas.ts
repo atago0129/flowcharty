@@ -79,24 +79,26 @@ export class FlowchartyCanvas {
         .attr("fill", d => this._elements.getNodeById(d).style.fillColor)
         .attr("stroke", d => this._elements.getNodeById(d).style.strokeColor)
         .attr("stroke-width", d => this._elements.getNodeById(d).style.strokeWidth);
-      enter.html(function (d) {
-        return d3.select(this).html() + _this.getTextElementsWithLineBreak(_this._elements.getNodeById(d));
-      });
+      enter.append("text")
+        .attr("dominant-baseline", "central")
+        .attr("text-anchor", (d) => (_this._elements.getNodeById(d).label.textAnchor))
+        .attr("font-size", (d) => (_this._elements.getNodeById(d).label.fontSize))
+        .attr("fill", (d) => (_this._elements.getNodeById(d).label.color))
+        .selectAll("tspan")
+        .data((d) => {
+          const label = _this._elements.getNodeById(d).label;
+          let result = [];
+          label.name.split(/\n/).reverse().map((name) => (result.push({label: name, dx: label.dx, dy: label.dy})));
+          return result;
+        })
+        .enter()
+        .append("tspan")
+        .text((d) => (d.label))
+        .attr("x", "0em")
+        .attr("y", (d, i) => (`-${i}em`))
+        .attr("dx", (d) => (d.dx))
+        .attr("dy", (d) => (d.dy));
     })
-  }
-
-  /**
-   * get <text> elements for line break
-   * @param {FlowchartyNode} node
-   * @returns {string}
-   */
-  private getTextElementsWithLineBreak(node: FlowchartyNode): string {
-    let html = "";
-    const textArray = node.label.name.split(/\n/);
-    textArray.reverse().forEach((t, i) => {
-      html += `<text font-size="${node.label.fontSize}" fill="${node.label.color}" dx="${node.label.dx}" dy="${node.label.dy}" text-anchor="${node.label.textAnchor}" dominant-baseline="central" y="-${i}em">${t}</text>`;
-    });
-    return html;
   }
 
   /**
